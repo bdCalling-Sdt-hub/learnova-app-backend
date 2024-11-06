@@ -1,0 +1,40 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\.aafa5af1d16cc25d44a01565be1b32d69fa6f25d-audit.json",
+    "files": [
+        {
+            "date": 1730522503295,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-10-success.log",
+            "hash": "3b1442ee344e6fc1fe2c48c38001367444ae0111202d4edd449acf2a510c1195"
+        },
+        {
+            "date": 1730523682132,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-11-success.log",
+            "hash": "de6afee1045d866f29e434a5390b99196a7839d5a94375cc4929fcc174995626"
+        },
+        {
+            "date": 1730527295076,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-12-success.log",
+            "hash": "6b2ccd534f724dee5fa2aea8258badecb30724af01db51bcade8586d2750bcb4"
+        },
+        {
+            "date": 1730546132565,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-17-success.log",
+            "hash": "19846d8d191810f1ac8908eed011ed3b8ddb43989e865ef87e3a3bdf2ee9e7e4"
+        },
+        {
+            "date": 1730550055834,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-18-success.log",
+            "hash": "43239be1aa3aa87b8368700d7f8bc7fe81f5d899bc9fc307840faa01f0496d45"
+        },
+        {
+            "date": 1730552664778,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\success\\02-11-2024-19-success.log",
+            "hash": "43cfaf37668943244a6e12a648259825cbd243d834638fff4401ad6dfb43cb8e"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,33 @@
+Sat Nov 02 2024 18:20:56 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:20:56 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:25:5 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:25:5 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:28:29 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:28:29 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:28:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:28:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 32.795 ms
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 27.520 ms
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 18.401 ms
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 20.306 ms
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 23.667 ms
+Sat Nov 02 2024 18:29:1 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 9.710 ms
+Sat Nov 02 2024 18:29:56 [SQUALLY] info: 192.168.10.102 - GET /video/chuby.mp4 200 - 2.901 ms
+Sat Nov 02 2024 18:29:56 [SQUALLY] info: 192.168.10.102 - GET /video/chuby.mp4 206 - 2.704 ms
+Sat Nov 02 2024 18:29:56 [SQUALLY] info: 192.168.10.102 - GET /video/chuby.mp4 206 - 1.388 ms
+Sat Nov 02 2024 18:30:18 [SQUALLY] info: 192.168.10.102 - GET /video/chuby.mp4 206 - 2.060 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 19.826 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 11.558 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 12.513 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 26.833 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 14.656 ms
+Sat Nov 02 2024 18:44:23 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 13.995 ms
+Sat Nov 02 2024 18:44:36 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:44:36 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:45:19 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 24.591 ms
+Sat Nov 02 2024 18:52:47 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:52:47 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:52:49 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:52:49 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 18:52:50 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 18:52:50 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m

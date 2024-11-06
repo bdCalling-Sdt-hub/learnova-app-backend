@@ -1,0 +1,120 @@
+Sat Nov 02 2024 19:4:24 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:4:24 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:10:38 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:10:38 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:10:45 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:10:45 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:11:14 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:11:14 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:11:27 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:11:27 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:11:54 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:11:54 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:11:59 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:11:59 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:12:11 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:12:11 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:13:36 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:13:36 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:13:50 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:13:50 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:16:51 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:16:51 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:17:15 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:17:15 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:17:17 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:17:17 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:17:30 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:17:30 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:17:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:17:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:17:33 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:17:33 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:18:16 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:18:16 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 30.779 ms
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 45.384 ms
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 19.452 ms
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 30.381 ms
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 18.814 ms
+Sat Nov 02 2024 19:18:34 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 9.317 ms
+Sat Nov 02 2024 19:19:1 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:19:1 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 26.800 ms
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 12.075 ms
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 35.803 ms
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 11.835 ms
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 13.847 ms
+Sat Nov 02 2024 19:19:10 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 9.927 ms
+Sat Nov 02 2024 19:20:54 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:20:54 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:20:56 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:20:56 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:4 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:4 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:21 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:21 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:22 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:22 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:25 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:25 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:25 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:25 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:26 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:26 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:27 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:27 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:22:45 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:22:45 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:10 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:10 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:10 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:10 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:11 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:11 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:12 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:12 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:22 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:22 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:26 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:26 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:27 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:27 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:24:31 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:24:31 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:25:4 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 23.027 ms
+Sat Nov 02 2024 19:26:7 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:26:7 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:26:47 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:26:47 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:26:54 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:26:54 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:26:55 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:26:55 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:26:56 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:26:56 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:0 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:0 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:0 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:0 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:10 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:10 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:11 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:11 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:11 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:11 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:27:12 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:27:12 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:28:9 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:28:9 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:28:22 [SQUALLY] info: 192.168.10.102 - POST /api/v1/lesson/upload 200 - 28.183 ms
+Sat Nov 02 2024 19:28:52 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:28:52 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
+Sat Nov 02 2024 19:29:44 [SQUALLY] info: [32m🚀 Database connected successfully[39m
+Sat Nov 02 2024 19:29:44 [SQUALLY] info: [33m♻️  Application listening on port:6001[39m
