@@ -2,9 +2,13 @@ import { Schema, model } from "mongoose";
 import { IShort, Level, ShortsModel } from "./short.interface";
 
 // Define the Mongoose schema for Shorts
-const shortsSchema = new Schema<IShort, ShortsModel>(
+const shortSchema = new Schema<IShort, ShortsModel>(
     {
         cover: {
+            type: String,
+            required: true,
+        },
+        video: {
             type: String,
             required: true,
         },
@@ -40,4 +44,4 @@ const shortsSchema = new Schema<IShort, ShortsModel>(
     }
 );
 
-export const Shorts = model<IShort, ShortsModel>("Shorts", shortsSchema);
+export const Short = model<IShort, ShortsModel>("Short", shortSchema);

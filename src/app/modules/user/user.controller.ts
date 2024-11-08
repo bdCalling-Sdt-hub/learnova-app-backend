@@ -52,8 +52,22 @@ const updateProfile = catchAsync( async (req: Request, res: Response, next: Next
     });
 });
 
+//update profile
+const teacherProfile = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    const result = await UserService.teacherProfileFromDB(user);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Teacher Profile Retrieved successfully',
+        data: result
+    });
+});
+
 export const UserController = { 
     createUser,
     getUserProfile, 
-    updateProfile
+    updateProfile,
+    teacherProfile
 };

@@ -8,6 +8,8 @@ import { emailTemplate } from "../../../shared/emailTemplate";
 import { emailHelper } from "../../../helpers/emailHelper";
 import unlinkFile from "../../../shared/unlinkFile";
 import { ICreateAccount } from "../../../types/emailTemplate";
+import { Following } from "../following/following.model";
+import { View } from "../view/view.mode";
 
 const createUserToDB = async (payload: Partial<IUser>): Promise<IUser> => {
   
@@ -70,8 +72,43 @@ const updateProfileToDB = async ( user: JwtPayload, payload: Partial<IUser>): Pr
     return updateDoc;
 };
 
+const teacherProfileFromDB = async ( user: JwtPayload): Promise<Partial<IUser | {}>> => {
+
+    const [teacher, totalFollower, totalView, totalWatchTime] = await Promise.all([
+        User.findById(user.id).select("name profile").lean(),
+        Following.countDocuments({ teacher: user.id }),
+        View.countDocuments({ teacher: user.id }),
+        View.aggregate([
+            { $match: { teacher: user.id } },
+            {
+                $group: {
+                    _id: null,
+                    totalWatchTime: { $sum: "$watchTime" }
+                }
+            },
+            {
+                $project: {
+                    totalWatchTime: { $divide: ["$totalWatchTime", 3600] }
+                }
+            }
+        ])
+    ]);
+
+    if(!teacher) return {};
+
+    const data = {
+        ...teacher,
+        totalFollower,
+        totalView,
+        totalWatchTime: totalWatchTime
+    }
+
+    return data;
+};
+
 export const UserService = {
     createUserToDB,
     getUserProfileFromDB,
-    updateProfileToDB
+    updateProfileToDB,
+    teacherProfileFromDB
 };

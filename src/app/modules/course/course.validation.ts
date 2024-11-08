@@ -13,9 +13,7 @@ const createCourseZodSchema = z.object({
         subject: z.string({ required_error: 'Subject is required' }),
         level: LevelEnum, // Enforce the enum level validation
         suitable: z.string({ required_error: 'Suitable is required' }),
-        aboutTeacher: z.string({ required_error: 'About Teacher is required' }),
-        rating: z.number({ required_error: 'Rating is required' }).min(0).max(5),
-        ratingCount: z.number({ required_error: 'Rating Count is required' }).int().min(0),
+        aboutTeacher: z.string({ required_error: 'About Teacher is required' })
     }),
 });
 

@@ -9,6 +9,10 @@ const courseSchema = new Schema<ICourse, CourseModel>(
             type: String,
             required: true,
         },
+        video: {
+            type: String,
+            required: true,
+        },
         title: {
             type: String,
             required: true,
@@ -38,15 +42,7 @@ const courseSchema = new Schema<ICourse, CourseModel>(
             type: Schema.Types.ObjectId,
             ref: "USER", // Reference to the Teacher model
             required: true,
-        },
-        rating: {
-            type: Number,
-            default: 0,
-        },
-        ratingCount: {
-            type: Number,
-            default: 0,
-        },
+        }
     },
     {
         timestamps: true

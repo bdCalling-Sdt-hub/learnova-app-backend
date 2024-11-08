@@ -10,6 +10,7 @@ export enum Level {
 // Define the Shorts interface
 export type IShort = {
     cover: string;
+    video: string;
     title: string;
     subject: string;
     description: string;

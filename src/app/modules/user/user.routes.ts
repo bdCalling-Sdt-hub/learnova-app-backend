@@ -31,5 +31,9 @@ router
         fileUploadHandler(),
         UserController.updateProfile
     );
+router.get("/teacher-profile", 
+    auth(USER_ROLES.TEACHER),
+    UserController.teacherProfile
+)
 
 export const UserRoutes = router;

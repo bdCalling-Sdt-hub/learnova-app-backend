@@ -21,7 +21,7 @@ const createCourse = catchAsync(async(req: Request, res: Response)=>{
 
 const getCourse = catchAsync(async(req: Request, res: Response)=>{
     
-    const result = await CourseService.getCourseFromDB(req.user);
+    const result = await CourseService.getCourseFromDB(req.user, req.query.search as string);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -33,7 +33,7 @@ const getCourse = catchAsync(async(req: Request, res: Response)=>{
 
 const courseDetails = catchAsync(async(req: Request, res: Response)=>{
     
-    const result = await CourseService.courseDetailsFromDB(req.params.id);
+    const result = await CourseService.courseDetailsFromDB(req.params.id, req.query);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

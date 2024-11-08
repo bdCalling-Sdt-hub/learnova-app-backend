@@ -1,15 +1,27 @@
-import  express from "express"
+import express from "express"
 import { USER_ROLES } from "../../../enums/user";
 import validateRequest from "../../middlewares/validateRequest";
 import auth from "../../middlewares/auth";
 import { ShortController } from "./short.controller";
 import { ShortValidation } from "./short.validation";
-const router  = express.Router();
+import fileUploadHandler from "../../middlewares/fileUploaderHandler";
+const router = express.Router();
 
-router.post("/", 
-    auth(USER_ROLES.TEACHER), 
-    validateRequest(ShortValidation.shortCreatedZodSchema), 
-    ShortController.createShort
-);
+router.route("/")
+    .post(
+        auth(USER_ROLES.TEACHER),
+        fileUploadHandler(),
+        validateRequest(ShortValidation.shortCreatedZodSchema),
+        ShortController.createShort
+    )
+    .get(
+        auth(USER_ROLES.TEACHER),
+        ShortController.getShortList
+    );
 
-export  const ShortRoutes = router;
+router.get("/:id",
+    auth(USER_ROLES.TEACHER),
+    ShortController.shortDetails
+)
+
+export const ShortRoutes = router;

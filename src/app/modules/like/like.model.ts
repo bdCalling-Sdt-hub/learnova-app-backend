@@ -11,7 +11,12 @@ const likesSchema = new Schema<ILike>(
         course: {
             type: Schema.Types.ObjectId,
             ref: "Course", // Reference to the Course model
-            required: true,
+            required: false,
+        },
+        short: {
+            type: Schema.Types.ObjectId,
+            ref: "Short", // Reference to the Short model
+            required: false,
         },
         teacher: {
             type: Schema.Types.ObjectId,

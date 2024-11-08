@@ -1,4 +1,4 @@
-import { Model, Schema, model, Types } from "mongoose";
+import { Model, Types } from "mongoose";
 
 // Define an enum for the level
 enum Level {
@@ -11,14 +11,13 @@ enum Level {
 export type ICourse = {
     teacher: Types.ObjectId; // Reference to a Teacher model
     cover: string;
+    video: string;
     title: string;
     description: string;
     subject: string;
     level: Level;
     suitable: string;
     aboutTeacher: string;
-    rating: number;
-    ratingCount: number;
 };
 
 // Create the Mongoose model for Course

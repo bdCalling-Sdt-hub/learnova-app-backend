@@ -6,12 +6,17 @@ const viewSchema = new Schema<IView, ViewModel>(
         course: {
             type: Schema.Types.ObjectId,
             ref: "Course", // Reference to the Course model
-            required: true,
+            required: false,
+        },
+        short: {
+            type: Schema.Types.ObjectId,
+            ref: "Short", // Reference to the Short model
+            required: false,
         },
         lesson: {
             type: Schema.Types.ObjectId,
             ref: "Lesson", // Reference to the Course model
-            required: true,
+            required: false,
         },
         teacher: {
             type: Schema.Types.ObjectId,
@@ -20,7 +25,7 @@ const viewSchema = new Schema<IView, ViewModel>(
         },
         watchTime: {
             type: Number,
-            required: true
+            required: false
         },
         student: {
             type: Schema.Types.ObjectId,

@@ -12,6 +12,7 @@ const quizCreateZodSchema = z.object({
     answer: z.string().min(1, { message: "Answer is required" }),
     explanation: z.string().min(1, { message: "Explanation is required" }),
     short: objectIdZodSchema("Short ID"), // Validates short as an ObjectId
+    course: objectIdZodSchema("Course ID"), // Validates short as an ObjectId
     teacher: objectIdZodSchema("Teacher ID") // Validates Teacher as an ObjectId
 });
 

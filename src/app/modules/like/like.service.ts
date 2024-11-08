@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { Like } from "./like.model";
 import { JwtPayload } from "jsonwebtoken";
 
-const toggleLikeToDB = async (payload: ILike): Promise<string> => {
+const toggleLikeToDB = async (payload: Partial<ILike>): Promise<string> => {
 
     if (!mongoose.Types.ObjectId.isValid(payload.student)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Student ID");

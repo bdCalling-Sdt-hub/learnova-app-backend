@@ -1,7 +1,8 @@
 import { Model, Types } from "mongoose";
 
 export type ILike = {
-    course: Types.ObjectId;
+    course?: Types.ObjectId;
+    short?: Types.ObjectId;
     teacher: Types.ObjectId;
     student: Types.ObjectId;
 };

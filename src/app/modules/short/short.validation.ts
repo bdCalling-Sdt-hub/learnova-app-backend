@@ -5,6 +5,7 @@ import { objectIdZodSchema } from '../../../helpers/checkObjectIdZodSchemaHelper
 // Schema for the IShort type
 const shortCreatedZodSchema = z.object({
     cover: z.string().min(1, { message: "Cover image URL is required" }),
+    video: z.string().min(1, { message: "Video URL is required" }),
     title: z.string().min(1, { message: "Title is required" }),
     subject: z.string().min(1, { message: "Subject is required" }),
     description: z.string().min(1, { message: "Description is required" }),

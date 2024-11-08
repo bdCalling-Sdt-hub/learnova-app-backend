@@ -4,11 +4,13 @@ import { USER_ROLES } from "../../../enums/user";
 import { CourseController } from "./course.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { CourseValidation } from "./course.validation";
+import fileUploadHandler from "../../middlewares/fileUploaderHandler";
 const router = express.Router();
 
 router.route("/")
     .post(
-        auth(USER_ROLES.TEACHER), 
+        auth(USER_ROLES.TEACHER),
+        fileUploadHandler(), 
         validateRequest(CourseValidation.createCourseZodSchema), 
         CourseController.createCourse
     )

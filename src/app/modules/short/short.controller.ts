@@ -20,4 +20,30 @@ const createShort = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
-export const ShortController = {createShort}
+const getShortList = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.getShortFromDB(req.user);
+    sendResponse(res, {
+        statusCode: StatusCodes.BAD_REQUEST,
+        success: true,
+        message: "Short List Retrieved Successfully",
+        data: result
+    })
+});
+
+const shortDetails = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.shortDetailsFromDB(req.params.id, req.query);
+    sendResponse(res, {
+        statusCode: StatusCodes.BAD_REQUEST,
+        success: true,
+        message: "Short Details Retrieved Successfully",
+        data: result
+    })
+});
+
+export const ShortController = {
+    createShort,
+    getShortList,
+    shortDetails
+}
