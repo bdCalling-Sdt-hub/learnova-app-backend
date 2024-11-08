@@ -6,7 +6,7 @@ export type IView = {
     short?: Types.ObjectId;
     student: Types.ObjectId;
     teacher: Types.ObjectId;
-    watchTime?: number;
+    watchTime: number;
 };
 
 export type ViewModel = Model<IView, Record<string, unknown>>

@@ -2,10 +2,11 @@ import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiErrors";
 import { IView } from "./view.interface";
 import { View } from "./view.mode";
+import { JwtPayload } from "jsonwebtoken";
 
 const createViewToDB = async (payload: IView): Promise<IView | null> => {
 
-    const query={
+    const query = {
         student: payload.student,
         course: payload.course,
         lesson: payload.lesson,
@@ -30,6 +31,53 @@ const createViewToDB = async (payload: IView): Promise<IView | null> => {
 
 }
 
+const viewStatisticFromDB = async (user: JwtPayload , query: string): Promise<{ day: string; totalView: number }[]> => {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
+
+    let daysArray: { day: string; totalView: number }[] = [];
+
+    // Initialize daysArray based on the query parameter
+    if (query === "weekly") {
+        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
+    } else if (query === "monthly") {
+        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
+    } else {
+        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
+    }
+
+    // Calculate view statistics based on query
+    const viewStatistics = await View.aggregate([
+        {
+            $match: {
+                teacher: user.id,
+                createdAt: { $gte: startDate, $lt: endDate }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    day: { $dayOfMonth: "$createdAt" }
+                },
+                totalView: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Update daysArray with the calculated statistics
+    viewStatistics.forEach((stat: any) => {
+        const dayIndex = parseInt(stat._id.day) - 1;
+        if (dayIndex < daysArray.length) {
+            daysArray[dayIndex].totalView = stat.totalView;
+        }
+    });
+
+    return daysArray;
+};
+
+
 export const ViewService = {
-    createViewToDB
+    createViewToDB,
+    viewStatisticFromDB
 }

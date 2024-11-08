@@ -12,4 +12,9 @@ router.post("/",
     ViewController.createView
 );
 
+router.get("/view-statistic", 
+    auth(USER_ROLES.TEACHER),
+    ViewController.viewStatistic
+);
+
 export  const ShortRoutes = router;
