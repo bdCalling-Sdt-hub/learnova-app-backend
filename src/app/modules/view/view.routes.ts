@@ -17,4 +17,9 @@ router.get("/view-statistic",
     ViewController.viewStatistic
 );
 
+router.get("/watchTime-statistic", 
+    auth(USER_ROLES.TEACHER),
+    ViewController.viewStatistic
+);
+
 export  const ShortRoutes = router;

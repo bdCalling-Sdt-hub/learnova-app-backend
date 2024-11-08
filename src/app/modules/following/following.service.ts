@@ -40,7 +40,53 @@ const followingCountFromDB = async (user: JwtPayload, course: string): Promise<I
     return result;
 }
 
+const followerStatisticFromDB = async (user: JwtPayload , query: string): Promise<{ day: string; totalFollower: number }[]> => {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
+
+    let daysArray: { day: string; totalFollower: number }[] = [];
+
+    // Initialize daysArray based on the query parameter
+    if (query === "weekly") {
+        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
+    } else if (query === "monthly") {
+        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
+    } else {
+        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
+    }
+
+    // Calculate view statistics based on query
+    const viewStatistics = await Following.aggregate([
+        {
+            $match: {
+                teacher: user.id,
+                createdAt: { $gte: startDate, $lt: endDate }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    day: { $dayOfMonth: "$createdAt" }
+                },
+                totalFollower: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Update daysArray with the calculated statistics
+    viewStatistics.forEach((start: any) => {
+        const dayIndex = parseInt(start._id.day) - 1;
+        if (dayIndex < daysArray.length) {
+            daysArray[dayIndex].totalFollower = start.totalFollower;
+        }
+    });
+
+    return daysArray;
+};
+
 export const FollowingService = {
     toggleFollowingToDB,
-    followingCountFromDB
+    followingCountFromDB,
+    followerStatisticFromDB
 }

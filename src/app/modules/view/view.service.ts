@@ -31,7 +31,7 @@ const createViewToDB = async (payload: IView): Promise<IView | null> => {
 
 }
 
-const viewStatisticFromDB = async (user: JwtPayload , query: string): Promise<{ day: string; totalView: number }[]> => {
+const viewStatisticFromDB = async (user: JwtPayload, query: string): Promise<{ day: string; totalView: number }[]> => {
     const now = new Date();
     const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
     const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
@@ -76,8 +76,59 @@ const viewStatisticFromDB = async (user: JwtPayload , query: string): Promise<{ 
     return daysArray;
 };
 
+const watchTimeStatisticFromDB = async (user: JwtPayload, query: string): Promise<{ day: string; totalHour: number }[]> => {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
+
+    let daysArray: { day: string; totalHour: number }[] = [];
+
+    // Initialize daysArray based on the query parameter
+    if (query === "weekly") {
+        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalHour: 0 }));
+    } else if (query === "monthly") {
+        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalHour: 0 }));
+    } else {
+        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
+    }
+
+    // Calculate view statistics based on query
+    const viewStatistics = await View.aggregate([
+        {
+            $match: {
+                teacher: user.id,
+                createdAt: { $gte: startDate, $lt: endDate }
+            }
+        },
+        {
+            $group: {
+                _id: { day: { $dayOfMonth: "$createdAt" } },
+                totalWatchTime: { $sum: "$watchTime" }
+            }
+        },
+        {
+            $project: {
+                day: { $toString: "$_id.day" },
+                totalHour: { $divide: ["$totalWatchTime", 3600] } // Convert watchTime to hours
+            }
+        }
+    ]);
+
+    // Update daysArray with the calculated statistics
+    viewStatistics.forEach((start: any) => {
+        const dayIndex = parseInt(start.day) - 1;
+        if (dayIndex < daysArray.length) {
+            daysArray[dayIndex].totalHour = start.totalHour;
+        }
+    });
+
+    return daysArray;
+};
+
+
 
 export const ViewService = {
     createViewToDB,
-    viewStatisticFromDB
+    viewStatisticFromDB,
+    watchTimeStatisticFromDB
 }

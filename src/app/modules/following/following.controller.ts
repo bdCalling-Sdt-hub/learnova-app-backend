@@ -32,8 +32,21 @@ const followingCount = catchAsync(async(req:Request, res:Response)=>{
     })
 });
 
+const followerStatistic = catchAsync(async(req:Request, res:Response)=>{
+
+    const result = await FollowingService.followerStatisticFromDB(req.user,  req.query.duration as string);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Course Followers Count Retrieved Successfully",
+        data: result
+    })
+});
+
 
 export const FollowingController = {
     toggleFollowing,
-    followingCount
+    followingCount,
+    followerStatistic
 }

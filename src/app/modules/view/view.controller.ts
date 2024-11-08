@@ -27,7 +27,19 @@ const viewStatistic = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: "View Created Successfully",
+        message: "View Retrieved Successfully",
+        data: result
+    })
+});
+
+const watchTimeStatistic = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await ViewService.watchTimeStatisticFromDB(req.user, req.query.duration as string);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Watch Time Retrieved Successfully",
         data: result
     })
 });
@@ -35,4 +47,4 @@ const viewStatistic = catchAsync(async (req: Request, res: Response) => {
 
 
 
-export const ViewController = { createView, viewStatistic }
+export const ViewController = { createView, viewStatistic, watchTimeStatistic }
