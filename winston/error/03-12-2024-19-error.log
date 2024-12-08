@@ -1,0 +1,4 @@
+Tue Dec 03 2024 19:49:12 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/like 404 - 12.085 ms
+Tue Dec 03 2024 19:49:28 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/like 400 - 18.622 ms
+Tue Dec 03 2024 19:50:2 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/like 400 - 20.784 ms
+Tue Dec 03 2024 19:50:3 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/like 400 - 3.175 ms

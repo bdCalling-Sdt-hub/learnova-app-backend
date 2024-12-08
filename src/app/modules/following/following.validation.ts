@@ -2,8 +2,9 @@ import { z } from 'zod';
 import { objectIdZodSchema } from '../../../helpers/checkObjectIdZodSchemaHelper';
 
 const createFollowingZodSchema = z.object({
-    teacher: objectIdZodSchema("Teacher ID"),
-    student: objectIdZodSchema("Student ID")
+    body: z.object({
+        teacher: objectIdZodSchema("Teacher ID")
+    })
 });
 
 export const FollowingValidation = {

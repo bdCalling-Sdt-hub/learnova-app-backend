@@ -31,6 +31,18 @@ const getCourse = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+const getCourseForStudent = catchAsync(async(req: Request, res: Response)=>{
+    
+    const result = await CourseService.getCourseForStudentFromDB(req.user, req.query);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Retrieved Course List Successfully",
+        data: result
+    })
+});
+
 const courseDetails = catchAsync(async(req: Request, res: Response)=>{
     
     const result = await CourseService.courseDetailsFromDB(req.params.id, req.query);
@@ -46,5 +58,6 @@ const courseDetails = catchAsync(async(req: Request, res: Response)=>{
 export const CourseController = {
     createCourse,
     courseDetails,
-    getCourse
+    getCourse,
+    getCourseForStudent
 }

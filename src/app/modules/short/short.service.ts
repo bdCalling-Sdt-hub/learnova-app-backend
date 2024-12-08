@@ -6,6 +6,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { View } from "../view/view.mode";
 import { Like } from "../like/like.model";
 import mongoose from "mongoose";
+import { Following } from "../following/following.model";
 
 const createShortToDB = async (payload: IShort): Promise<IShort> => {
     const result = await Short.create(payload);
@@ -13,11 +14,137 @@ const createShortToDB = async (payload: IShort): Promise<IShort> => {
     return result;
 }
 
-const getShortFromDB = async (user: JwtPayload, search: String): Promise<IShort[]> => {
+const getShortFromDB = async (user: JwtPayload, query: Record<string, unknown>): Promise<IShort[]> => {
+
+    const { search, sort, following, ...others } = query;
 
     const anyConditions = [];
 
-    anyConditions.push({teacher: user.id});
+    // search conditions
+    if (search) {
+        anyConditions.push({
+            $or: ["title", "description", "subject", "level", "suitable", "aboutTeacher"].map((field) => ({
+                [field]: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }))
+        });
+    }
+
+    // following conditions
+    if (following) {
+        const teacherIds = await Following.find({ student: user.id }).distinct("teacher");
+
+        anyConditions.push({
+            teacher: { $in: teacherIds }
+        })
+    }
+
+    // Additional filters for other fields
+    if (Object.keys(others).length) {
+        anyConditions.push({
+            $and: Object.entries(others).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    const whereConditions = anyConditions.length > 0 ? { $and: anyConditions } : {};
+
+    // Default sort or custom sort
+    const sortOption: any = { createdAt: sort ? -1 : 1 };
+
+    const result: IShort[] = await Short.find(whereConditions).select("title teacher cover createdAt")
+        .lean()
+        .sort(sortOption) // Apply sort here
+        .populate({
+            path: "teacher",
+            select: "name profile"
+        });
+
+    return result;
+}
+
+const singleShortFromDB = async (user: JwtPayload, id: string): Promise<IShort | Record<string, any>> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Short ID");
+    }
+
+    // Fetch the Short document and populate teacher details
+    const result = await Short.findById(id)
+        .select("title teacher video description")
+        .lean()
+        .populate({
+            path: "teacher",
+            select: "name profile",
+        });
+
+    // If the Short is not found, return an empty object
+    if (!result) {
+        return {};
+    }
+
+    // Check if the user is following the teacher
+    const isFollowing = await Following.exists({
+        teacher: result.teacher._id,
+        student: user.id,
+    });
+
+    // Check if the user is following the teacher
+    const isLiked = await Like.exists({ short: result._id });
+
+    // Return the result with the following status
+    return {
+        ...result,
+        following: !!isFollowing,
+        like: !!isLiked,
+    };
+};
+
+
+const getReelsFromDB = async (user: JwtPayload): Promise<IShort[]> => {
+
+    // Fetch the Short document and populate teacher details
+    const shorts = await Short.find({})
+        .select("title teacher video description")
+        .lean()
+        .populate({
+            path: "teacher",
+            select: "name profile",
+        });
+
+    // If the Short is not found, return an empty object
+    if (!shorts) {
+        return [];
+    }
+
+    const result: IShort[] = await Promise.all(shorts?.map(async (short: any) => {
+
+        // Check if the user is following the teacher
+        const isFollowing = await Following.exists({
+            teacher: short?.teacher?._id,
+            student: user.id,
+        });
+
+        // Check if the user liked the short
+        const isLiked = await Like.exists({ short: short?._id });
+
+        return {
+            ...short,
+            following: !!isFollowing,
+            liked: !!isLiked
+        };
+    }));
+
+    return result
+};
+
+const teacherShortFromDB = async (user: JwtPayload, query: Record<string, unknown>): Promise<IShort[]> => {
+
+    const { search, ...others } = query;
+    const anyConditions = [];
 
     if (search) {
         anyConditions.push({
@@ -32,7 +159,7 @@ const getShortFromDB = async (user: JwtPayload, search: String): Promise<IShort[
 
     const whereConditions = anyConditions.length > 0 ? { $and: anyConditions } : {};
 
-    const result: IShort[] = await Short.find(whereConditions).select("title cover createdAt").lean();
+    const result: IShort[] = await Short.find(whereConditions).select("title cover teacher createdAt ").lean();
 
     if (!result) return [];
 
@@ -76,7 +203,7 @@ const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): P
         short: id,
         createdAt: { $gte: startDate, $lt: endDate }
     } as any);
-    
+
     // Fetch total like 
     const totalLike = await Like.countDocuments({
         short: id,
@@ -103,7 +230,7 @@ const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): P
                 totalHours: { $divide: ["$totalSeconds", 3600] } // Convert seconds to hours
             }
         }
-    ]);    
+    ]);
 
     const data = {
         ...result.toObject(), // Convert Mongoose document to plain object
@@ -118,5 +245,8 @@ const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): P
 export const ShortService = {
     createShortToDB,
     getShortFromDB,
-    shortDetailsFromDB
+    shortDetailsFromDB,
+    teacherShortFromDB,
+    singleShortFromDB,
+    getReelsFromDB
 }

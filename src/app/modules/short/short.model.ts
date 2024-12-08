@@ -35,7 +35,7 @@ const shortSchema = new Schema<IShort, ShortsModel>(
         },
         teacher: {
             type: Schema.Types.ObjectId,
-            ref: "Teacher", // Reference to the Teacher model
+            ref: "User", // Reference to the Teacher model
             required: true,
         },
     },

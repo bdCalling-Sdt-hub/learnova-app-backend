@@ -4,9 +4,6 @@ const LevelEnum = z.enum(['Beginner', 'Intermediate', 'Advanced']); // replace t
 
 const createCourseZodSchema = z.object({
     body: z.object({
-        teacher: z.string({ required_error: 'Teacher ID is required' }).refine(value => value.match(/^[a-fA-F0-9]{24}$/), {
-            message: "Invalid ObjectId format for teacher",
-        }),
         cover: z.string({ required_error: 'Cover is required' }),
         title: z.string({ required_error: 'Title is required' }).min(1, "Title cannot be empty"),
         description: z.string({ required_error: 'Description is required' }).min(1, "Description cannot be empty"),

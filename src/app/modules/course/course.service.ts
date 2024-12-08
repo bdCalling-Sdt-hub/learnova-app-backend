@@ -6,21 +6,22 @@ import { JwtPayload } from "jsonwebtoken";
 import { View } from "../view/view.mode";
 import { Like } from "../like/like.model";
 import mongoose from "mongoose";
+import { Bio } from "../bio/bio.model";
 
-const createCourseToDB = async(payload: ICourse): Promise<ICourse | null>=>{
+const createCourseToDB = async (payload: ICourse): Promise<ICourse | null> => {
     const result: ICourse = await Course.create(payload);
-    if(!result){
+    if (!result) {
         throw new ApiError(StatusCodes.BAD_GATEWAY, "Failed to created Course");
     }
 
     return result;
 }
 
-const getCourseFromDB = async(user: JwtPayload, search:String): Promise<ICourse[]>=>{
+const getCourseFromDB = async (user: JwtPayload, search: String): Promise<ICourse[]> => {
 
     const anyConditions = [];
 
-    anyConditions.push({teacher: user.id});
+    anyConditions.push({ teacher: user.id });
 
     if (search) {
         anyConditions.push({
@@ -37,17 +38,57 @@ const getCourseFromDB = async(user: JwtPayload, search:String): Promise<ICourse[
 
     const result: ICourse[] = await Course.find(whereConditions).select("title cover createdAt").lean();
 
-    if(!result) return [];
+    if (!result) return [];
 
     const courses = await Promise.all(result?.map(async (course: any) => {
         return {
             ...course,
-            views: await View.countDocuments({teacher: user.id, course: course._id }) || 0,
-            likes: await Like.countDocuments({teacher: user.id, course: course._id }) || 0,
+            views: await View.countDocuments({ teacher: user.id, course: course._id }) || 0,
+            likes: await Like.countDocuments({ course: course._id }) || 0,
         }
     }));
 
     return courses;
+}
+
+const getCourseForStudentFromDB = async (user: JwtPayload, query: Record<string, unknown>): Promise<ICourse | {}> => {
+
+    // get the student grade for level content
+    const student = await Bio.findOne({ student: user.id }).select("grade");
+    if (!student) {
+        return {};
+    }
+
+    const { subject } = query;
+
+    const conditions: Record<string, unknown> = {
+        grade: student.grade,
+        ...(subject as object && { subject }),
+    };
+
+    const result: ICourse[] = await Course.find(conditions)
+        .select("title cover subject level teacher")
+        .populate({
+            path: "teacher",
+            select: "name"
+        })
+        .lean();
+
+    if (!result) return {};
+
+    const personalizedCourse = await Promise.all(
+        result?.map(async (course: any) => {
+            return {
+                ...course,
+                likes: await Like.countDocuments({ course: course._id }),
+            }
+        })
+    );
+
+    const trendingCourse =  personalizedCourse.sort((a, b) => b.likes - a.likes);
+
+
+    return { personalizedCourse, trendingCourse };
 }
 
 const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): Promise<ICourse | {}> => {
@@ -80,7 +121,7 @@ const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): 
         course: id,
         createdAt: { $gte: startDate, $lt: endDate }
     } as any);
-    
+
     // Fetch total like 
     const totalLike = await Like.countDocuments({
         course: id,
@@ -107,7 +148,7 @@ const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): 
                 totalHours: { $divide: ["$totalSeconds", 3600] } // Convert seconds to hours
             }
         }
-    ]);    
+    ]);
 
     const data = {
         ...result.toObject(),
@@ -119,9 +160,61 @@ const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): 
     return data;
 };
 
+const courseDetailsStatisticFromDB = async (id: string, query: string): Promise<ICourse | {}> => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const result = await Course.findById(id)
+        .select("video title createdAt subject level description suitable");
+
+    if (!result) return {};
+
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
+
+    let daysArray: { day: string; totalFollower: number }[] = [];
+
+    // Initialize daysArray based on the query parameter
+    if (query === "weekly") {
+        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
+    } else if (query === "monthly") {
+        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
+    } else {
+        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
+    }
+
+    const [teacher] = await Promise.all([
+        View.aggregate([
+            {
+                $match: {
+                    course: id,
+                    createdAt: { $gte: startDate, $lt: endDate }
+                }
+            },
+            {
+                $group: {
+                    _id: { day: { $dayOfMonth: "$createdAt" } },
+                    totalWatchTime: { $sum: "$watchTime" }
+                }
+            },
+            {
+                $project: {
+                    day: { $toString: "$_id.day" },
+                    totalHour: { $divide: ["$totalWatchTime", 3600] } // Convert watchTime to hours
+                }
+            }
+        ])
+    ]);
+
+    return teacher;
+}
 
 export const CourseService = {
     createCourseToDB,
     getCourseFromDB,
-    courseDetailsFromDB
+    courseDetailsFromDB,
+    courseDetailsStatisticFromDB,
+    getCourseForStudentFromDB
 }

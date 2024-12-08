@@ -11,6 +11,7 @@ router.post("/",
     validateRequest(FollowingValidation.createFollowingZodSchema), 
     FollowingController.toggleFollowing
 );
+
 router.post("/:id", auth(USER_ROLES.TEACHER), FollowingController.followingCount);
 
 export const FollowingRoutes = router;

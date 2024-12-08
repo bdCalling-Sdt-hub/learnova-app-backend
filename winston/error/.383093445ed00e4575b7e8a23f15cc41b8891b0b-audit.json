@@ -6,9 +6,14 @@
     "auditLog": "D:\\bdCalling\\Backend\\learnova\\winston\\error\\.383093445ed00e4575b7e8a23f15cc41b8891b0b-audit.json",
     "files": [
         {
-            "date": 1730977871050,
-            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\error\\07-11-2024-17-error.log",
-            "hash": "70bcc0744f14ae77c8cd8bc26a35dd2856293911677e489d458c9e612410705b"
+            "date": 1733233398260,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\error\\03-12-2024-19-error.log",
+            "hash": "c5f39fd13674a05a4f0ea2613ddd0ce88918a07939f93d1cf6cde550f2bb7af4"
+        },
+        {
+            "date": 1733234400314,
+            "name": "D:\\bdCalling\\Backend\\learnova\\winston\\error\\03-12-2024-20-error.log",
+            "hash": "2e804567c414797c9e38dd53b77eca9103585cfcc899a44e6f7ebae771ffe9b1"
         }
     ],
     "hashType": "sha256"

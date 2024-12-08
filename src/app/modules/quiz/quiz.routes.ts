@@ -12,4 +12,9 @@ router.post("/",
     QuizController.createQuiz
 )
 
+router.get("/:id", 
+    auth(USER_ROLES.STUDENT),
+    QuizController.quizDetails
+)
+
 export const QuizRoutes = router; 

@@ -13,7 +13,7 @@ const createShort = catchAsync(async(req: Request, res: Response)=>{
     const result = await ShortService.createShortToDB(payload);
 
     sendResponse(res, {
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Created Short Successfully",
         data: result
@@ -21,10 +21,20 @@ const createShort = catchAsync(async(req: Request, res: Response)=>{
 });
 
 const getShortList = catchAsync(async(req: Request, res: Response)=>{
-
-    const result = await ShortService.getShortFromDB(req.user);
+    const result = await ShortService.getShortFromDB(req.user, req.query);
     sendResponse(res, {
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Short List Retrieved Successfully",
+        data: result
+    })
+});
+
+const teacherShortList = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.teacherShortFromDB(req.user, req.query);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Short List Retrieved Successfully",
         data: result
@@ -42,8 +52,33 @@ const shortDetails = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+const singleShortDetails = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.singleShortFromDB( req.user, req.params.id);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Short Details Retrieved Successfully",
+        data: result
+    })
+});
+
+const getReels = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.getReelsFromDB(req.user);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Reels Retrieved Successfully",
+        data: result
+    })
+});
+
 export const ShortController = {
     createShort,
     getShortList,
-    shortDetails
+    shortDetails,
+    teacherShortList,
+    singleShortDetails,
+    getReels    
 }

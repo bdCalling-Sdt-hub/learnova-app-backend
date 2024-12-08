@@ -4,7 +4,7 @@ import { Model, Types } from "mongoose";
 export enum Level {
     Beginner = "Beginner",
     Intermediate = "Intermediate",
-    Advance = "Advance"
+    Advanced = "Advanced"
 }
 
 // Define the Shorts interface

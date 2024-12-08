@@ -1,0 +1,51 @@
+Tue Dec 03 2024 19:43:18 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:43:18 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:43:35 [LEARNOVA] info: 192.168.10.102 - GET /api/v1/short 200 - 13.670 ms
+Tue Dec 03 2024 19:43:50 [LEARNOVA] info: 192.168.10.102 - GET /api/v1/short/674d903c7b49b8af188b5c7a 200 - 6.353 ms
+Tue Dec 03 2024 19:46:41 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:46:41 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:48:26 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:48:26 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:26 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:26 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:26 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:26 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:52 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:52 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:53 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:53 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:54 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:54 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:49:55 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:49:55 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:1 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:1 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:7 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:7 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:21 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:21 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:23 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:23 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:23 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:23 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:49 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:50 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:50:51 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:50:51 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:52:16 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:52:16 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:52:17 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:52:17 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:56:11 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:56:11 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:57:3 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:57:3 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:57:5 [LEARNOVA] info: 192.168.10.102 - POST /api/v1/like 200 - 19.926 ms
+Tue Dec 03 2024 19:57:8 [LEARNOVA] info: 192.168.10.102 - POST /api/v1/like 200 - 5.284 ms
+Tue Dec 03 2024 19:57:9 [LEARNOVA] info: 192.168.10.102 - POST /api/v1/like 200 - 4.899 ms
+Tue Dec 03 2024 19:58:17 [LEARNOVA] info: 192.168.10.102 - POST /api/v1/like 200 - 4.792 ms
+Tue Dec 03 2024 19:58:20 [LEARNOVA] info: 192.168.10.102 - POST /api/v1/like 200 - 5.416 ms
+Tue Dec 03 2024 19:59:52 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:59:52 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
+Tue Dec 03 2024 19:59:59 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
+Tue Dec 03 2024 19:59:59 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m

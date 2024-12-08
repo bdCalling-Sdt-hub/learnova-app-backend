@@ -4,6 +4,8 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthController } from './auth.controller';
 import { AuthValidation } from './auth.validation';
+import { BioValidation } from '../bio/bio.validation';
+import { BioController } from '../bio/bio.controller';
 const router = express.Router();
 
 router.post(
@@ -38,6 +40,18 @@ router.post(
 router.post(
     '/resend-otp',
     AuthController.resendVerificationEmail
+);
+
+router.post(
+    '/social-login',
+    AuthController.socialLogin
+);
+
+router.post(
+    "/bio",
+    auth(USER_ROLES.STUDENT), 
+    validateRequest(BioValidation.bioCreatedZodSchema), 
+    BioController.createBio
 );
 
 router.post(

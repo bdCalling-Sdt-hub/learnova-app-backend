@@ -7,8 +7,8 @@ import { JwtPayload } from "jsonwebtoken";
 
 const toggleFollowingToDB = async (payload: IFollowing): Promise<string> => {
 
-    if (!mongoose.Types.ObjectId.isValid(payload.student)) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Student ID");
+    if (!mongoose.Types.ObjectId.isValid(payload.teacher)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Teacher ID");
     }
 
     const isExist = await Following.findOne({
@@ -18,7 +18,7 @@ const toggleFollowingToDB = async (payload: IFollowing): Promise<string> => {
 
     if (isExist) {
         await Following.findByIdAndDelete(isExist._id);
-        return "UnFollowing This Course"
+        return "UnFollowing This Teacher"
     } else {
         const result = await Following.create(payload);
 
@@ -26,10 +26,9 @@ const toggleFollowingToDB = async (payload: IFollowing): Promise<string> => {
             throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to following")
         }
 
-        return "Following This Course"
+        return "Following This Teacher"
     }
 }
-
 
 const followingCountFromDB = async (user: JwtPayload, course: string): Promise<IFollowing | {}> => {
 

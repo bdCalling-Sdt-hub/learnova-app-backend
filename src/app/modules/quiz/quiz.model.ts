@@ -25,14 +25,17 @@ const quizSchema = new Schema<IQuiz, QuizModel>(
         },
         short: {
             type: Schema.Types.ObjectId,
+            ref: "Short",
             required: false,
         },
         course: {
             type: Schema.Types.ObjectId,
+            ref: "Course",
             required: false,
         },
         teacher: {
             type: Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         }
     },

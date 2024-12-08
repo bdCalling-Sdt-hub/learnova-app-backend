@@ -19,4 +19,19 @@ const createQuiz = catchAsync(async(req:Request, res: Response)=>{
     })
 });
 
-export const QuizController= { createQuiz }
+const quizDetails = catchAsync(async(req:Request, res: Response)=>{
+
+    const result = await QuizService.quizDetailsFromDB(req.params.id);
+
+    sendResponse(res, {
+        statusCode : StatusCodes.OK,
+        success: true,
+        message: "Quiz Details Retrieved successfully",
+        data: result
+    })
+});
+
+export const QuizController= { 
+    createQuiz,
+    quizDetails 
+}

@@ -1,15 +1,11 @@
 import { model, Schema } from "mongoose";
-import { CourseModel, ICourse } from "./course.interface";
+import { CourseModel, Grade, ICourse } from "./course.interface";
 import { Level } from "../short/short.interface";
 
 // Define the Mongoose schema for Course
 const courseSchema = new Schema<ICourse, CourseModel>(
     {
         cover: {
-            type: String,
-            required: true,
-        },
-        video: {
             type: String,
             required: true,
         },
@@ -30,6 +26,11 @@ const courseSchema = new Schema<ICourse, CourseModel>(
             enum: Object.values(Level), // Allows only specified level values
             required: true,
         },
+        grade: {
+            type: String,
+            enum: Object.values(Grade),
+            required: true
+        },
         suitable: {
             type: String,
             required: true,
@@ -40,7 +41,7 @@ const courseSchema = new Schema<ICourse, CourseModel>(
         },
         teacher: {
             type: Schema.Types.ObjectId,
-            ref: "USER", // Reference to the Teacher model
+            ref: "User", // Reference to the Teacher model
             required: true,
         }
     },
