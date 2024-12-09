@@ -34,6 +34,8 @@ router.route("/")
     .get(auth(USER_ROLES.TEACHER), CourseController.getCourse);
 
 router.get("/student", auth(USER_ROLES.STUDENT), CourseController.getCourseForStudent);
+router.get("/teacher/:id", auth(USER_ROLES.STUDENT), CourseController.teacherDetails);
+router.get("/student/:id", auth(USER_ROLES.STUDENT), CourseController.courseDetailsForStudent);
 router.get("/:id", auth(USER_ROLES.TEACHER), CourseController.courseDetails);
 
 export const CourseRoutes = router;

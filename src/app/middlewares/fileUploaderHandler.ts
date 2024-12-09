@@ -30,7 +30,10 @@ const fileUploadHandler = () => {
                     uploadDir = path.join(baseUploadDir, 'images');
                     break;
                 case 'cover':
-                        uploadDir = path.join(baseUploadDir, 'covers');
+                    uploadDir = path.join(baseUploadDir, 'covers');
+                    break;
+                case 'document':
+                        uploadDir = path.join(baseUploadDir, 'documents');
                         break;
                 case 'video':
                     uploadDir = path.join(baseUploadDir, 'videos');
@@ -71,7 +74,7 @@ const fileUploadHandler = () => {
                 cb(new ApiError(StatusCodes.BAD_REQUEST, 'Only .jpeg, .png, .jpg file supported'))
             }
         }
-        else if(file.fieldname === 'cover') {
+        else if (file.fieldname === 'cover') {
             if (
                 file.mimetype === 'image/jpeg' ||
                 file.mimetype === 'image/png' ||
@@ -81,14 +84,21 @@ const fileUploadHandler = () => {
             } else {
                 cb(new ApiError(StatusCodes.BAD_REQUEST, 'Only .jpeg, .png, .jpg file supported'))
             }
-        }   
+        }
+        else if (file.fieldname === 'document') {
+            if (file.mimetype === 'document/pdf') {
+                cb(null, true);
+            } else {
+                cb(new ApiError(StatusCodes.BAD_REQUEST, 'Only .pdf file supported'))
+            }
+        }
         else if (file.fieldname === 'video') {
             if (file.mimetype === 'video/mp4') {
                 cb(null, true);
             } else {
                 cb(new ApiError(StatusCodes.BAD_REQUEST, 'Only .mp4 file supported'));
             }
-        } 
+        }
         else {
             cb(new ApiError(StatusCodes.BAD_REQUEST, 'This file is not supported'))
         }
@@ -97,6 +107,7 @@ const fileUploadHandler = () => {
     const upload = multer({ storage: storage, fileFilter: filterFilter })
         .fields([
             { name: 'image', maxCount: 3 },
+            { name: 'document', maxCount: 1 },
             { name: 'cover', maxCount: 1 },
             { name: 'video', maxCount: 1 },
         ]);

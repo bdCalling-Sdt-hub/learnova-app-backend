@@ -12,30 +12,6 @@ const router = express.Router();
 
 router.post('/', 
     auth(USER_ROLES.TEACHER), 
-    fileUploadHandler(),
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const payload = req.body;
-
-            // this is for video string;
-            let video: string | undefined = undefined;
-            if (req.files && "video" in req.files && req.files.video[0]) {
-                video = `/videos/${req.files.video[0].filename}`;
-            }
-
-            // this is for image string;
-            let image: string | undefined = undefined;
-            if (req.files && "image" in req.files && req.files.image[0]) {
-                image = `/images/${req.files.image[0].filename}`;
-            }
-
-            req.body = { image, video, ...payload };
-            next();
-
-        } catch (error) {
-            return res.status(500).json({ message: "An error occurred while processing the CSV file." });
-        }
-    }, 
     LessonController.createLesson
 );
 router.get("/:id", auth(USER_ROLES.TEACHER), validateRequest(LessonValidation.lessonSchema), LessonController.getLessonByCourse)

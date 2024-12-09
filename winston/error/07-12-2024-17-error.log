@@ -1,3 +1,0 @@
-Sat Dec 07 2024 17:18:34 [LEARNOVA] error: 192.168.10.102 - GET /api/v1/quiz/asdasd 400 - 11.497 ms
-Sat Dec 07 2024 17:55:8 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/auth/bio 400 - 31.790 ms
-Sat Dec 07 2024 17:55:24 [LEARNOVA] error: 192.168.10.102 - POST /api/v1/auth/bio 500 - 14.537 ms

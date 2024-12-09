@@ -7,6 +7,8 @@ import { View } from "../view/view.mode";
 import { Like } from "../like/like.model";
 import mongoose from "mongoose";
 import { Bio } from "../bio/bio.model";
+import { User } from "../user/user.model";
+import { Short } from "../short/short.model";
 
 const createCourseToDB = async (payload: ICourse): Promise<ICourse | null> => {
     const result: ICourse = await Course.create(payload);
@@ -85,7 +87,7 @@ const getCourseForStudentFromDB = async (user: JwtPayload, query: Record<string,
         })
     );
 
-    const trendingCourse =  personalizedCourse.sort((a, b) => b.likes - a.likes);
+    const trendingCourse = personalizedCourse.sort((a, b) => b.likes - a.likes);
 
 
     return { personalizedCourse, trendingCourse };
@@ -211,10 +213,78 @@ const courseDetailsStatisticFromDB = async (id: string, query: string): Promise<
     return teacher;
 }
 
+const teacherDetailsFromDB = async (id: string): Promise<{}> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const teacher = await User.findById(id)
+        .select("profile name createdAt")
+        .lean();
+
+    if (!teacher){
+        throw new ApiError(StatusCodes.NOT_FOUND, "Teacher not found");
+    }
+
+    const [shortsCount, courseCount, course, short] = await Promise.all([
+        Short.countDocuments({ teacher: id }),
+        Course.countDocuments({ teacher: id }),
+        Course.find({ teacher: id })
+            .select("teacher level cover")
+            .populate({ path: "teacher", select: "name" })
+            .lean(),
+        Short.find({ teacher: id })
+            .select("teacher cover")
+            .populate({ path: "teacher", select: "name" })
+            .lean()
+    ])
+
+    const data = {
+        ...teacher,
+        shortsCount,
+        courseCount,
+        course,
+        short
+    }
+
+
+    return data;
+};
+
+const courseDetailsForStudentFromDB = async (id: string): Promise<ICourse | {}> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const [course, likeCount] = await Promise.all([
+        Course.findById(id)
+            .select("video title level description")
+            .populate({
+                path: "teacher",
+                select: "name"
+            })
+            .lean(),
+        Like.countDocuments({ course: id })
+    ])
+
+    if (!course) throw new ApiError(StatusCodes.NOT_FOUND, "Teacher not found");;
+
+    const data = {
+        ...course,
+        likeCount
+    }
+
+    return data;
+};
+
 export const CourseService = {
     createCourseToDB,
     getCourseFromDB,
     courseDetailsFromDB,
     courseDetailsStatisticFromDB,
-    getCourseForStudentFromDB
+    getCourseForStudentFromDB,
+    teacherDetailsFromDB,
+    courseDetailsForStudentFromDB
 }

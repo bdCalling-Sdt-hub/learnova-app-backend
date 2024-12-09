@@ -55,9 +55,35 @@ const courseDetails = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+const teacherDetails = catchAsync(async(req: Request, res: Response)=>{
+    
+    const result = await CourseService.teacherDetailsFromDB(req.params.id);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Teacher Details Retrieved Successfully",
+        data: result
+    })
+});
+
+const courseDetailsForStudent = catchAsync(async(req: Request, res: Response)=>{
+    
+    const result = await CourseService.courseDetailsForStudentFromDB(req.params.id);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Course Details For Student Retrieved Successfully",
+        data: result
+    })
+});
+
 export const CourseController = {
     createCourse,
     courseDetails,
     getCourse,
-    getCourseForStudent
+    getCourseForStudent,
+    teacherDetails,
+    courseDetailsForStudent
 }
