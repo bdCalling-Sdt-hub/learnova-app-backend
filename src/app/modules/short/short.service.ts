@@ -161,26 +161,27 @@ const teacherShortFromDB = async (user: JwtPayload, query: Record<string, unknow
 
     const result: IShort[] = await Short.find(whereConditions).select("title cover teacher createdAt ").lean();
 
-    if (!result) return [];
+    // if (!result) return [];
 
     const shorts = await Promise.all(result?.map(async (short: any) => {
         return {
             ...short,
-            views: await View.countDocuments({ teacher: user.id, short: short._id }) || 0,
-            likes: await Like.countDocuments({ teacher: user.id, short: short._id }) || 0,
+            views: await View.countDocuments({ short: short._id }),
+            likes: await Like.countDocuments({ short: short._id })
         }
     }));
 
     return shorts;
 }
 
-const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): Promise<IShort | {}> => {
+const shortDetailsForTeacherFromDB = async (id: string, query: Record<string, unknown>): Promise<IShort | {}> => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
     }
 
     const result = await Short.findById(id)
-        .select("title video subject createdAt level suitable");
+        .select("title video subject createdAt level suitable")
+        .lean();
 
     if (!result) return {};
 
@@ -233,10 +234,12 @@ const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): P
     ]);
 
     const data = {
-        ...result.toObject(), // Convert Mongoose document to plain object
-        totalView: totalView || 0,
-        totalLike: totalLike || 0,
-        totalWatchTime: totalWatchTime || 0
+        ...result,
+        analytics: {
+            totalView: totalView,
+            totalLike: totalLike,
+            totalWatchTime: totalWatchTime[0]?.totalWatchTime || 0
+        }
     };
 
     return data;
@@ -245,7 +248,7 @@ const shortDetailsFromDB = async (id: string, query: Record<string, unknown>): P
 export const ShortService = {
     createShortToDB,
     getShortFromDB,
-    shortDetailsFromDB,
+    shortDetailsForTeacherFromDB,
     teacherShortFromDB,
     singleShortFromDB,
     getReelsFromDB

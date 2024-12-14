@@ -11,6 +11,8 @@ import { CourseRoutes } from '../modules/course/course.routes';
 import { TopicRoutes } from '../modules/topic/topic.routes';
 import { EnrollRoutes } from '../modules/enroll/enroll.routes';
 import { ProgressRoutes } from '../modules/progress/progress.routes';
+import { PackageRoutes } from '../modules/package/package.routes';
+import { SubscriptionRoutes } from '../modules/subscription/subscription.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -26,6 +28,8 @@ const apiRoutes = [
     { path: "/topic", route: TopicRoutes },
     { path: "/enroll", route: EnrollRoutes },
     { path: "/progress", route: ProgressRoutes },
+    { path: "/package", route: PackageRoutes },
+    { path: "/subscription", route: SubscriptionRoutes },
 ]
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

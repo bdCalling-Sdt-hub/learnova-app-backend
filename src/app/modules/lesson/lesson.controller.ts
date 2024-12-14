@@ -21,9 +21,21 @@ const createLesson = catchAsync(async (req: Request, res: Response) => {
     });
 })
 
-const getLessonByCourse = catchAsync(async (req: Request, res: Response) => {
+const updateLesson = catchAsync(async (req: Request, res: Response) => {
 
-    const result = await LessonService.getLessonByCourseFromDB(req.params.id);
+    const result = await LessonService.updateLessonToDB(req.params.id, req.body);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: 'Lesson Retrieved Successfully',
+        data: result,
+    });
+})
+
+const deleteLesson = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await LessonService.deleteLessonToDB(req.params.id);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -47,6 +59,7 @@ const lessonDetails = catchAsync(async (req: Request, res: Response) => {
 
 export const LessonController = {
     createLesson,
-    getLessonByCourse,
+    updateLesson,
+    deleteLesson,
     lessonDetails
 }

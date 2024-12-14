@@ -8,7 +8,7 @@ import { Subscription } from "./subscription.model";
 
 // create payment intent
 const createPaymentIntentToStripe = async(
-    user: JwtPayload, priceId:string ): Promise<{ paymentIntent: Stripe.PaymentIntent }> =>{
+    user: JwtPayload, priceId:string ): Promise<{client_secret: string, txid: string}> =>{
 
     // Create customer
     const customer = await stripe.customers.create({email : user.email});
@@ -26,7 +26,10 @@ const createPaymentIntentToStripe = async(
     // Check if latest_invoice exists and is of type Invoice
     const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
 
-    return { paymentIntent: latestInvoice.payment_intent as Stripe.PaymentIntent };
+    return {
+        client_secret: (latestInvoice.payment_intent as Stripe.PaymentIntent).client_secret as string,
+        txid : (latestInvoice.payment_intent as Stripe.PaymentIntent).id
+    };
 }
 
 // create subscription

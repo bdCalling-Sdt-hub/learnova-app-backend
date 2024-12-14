@@ -9,11 +9,11 @@ const router = express.Router()
 router
     .route("/")
     .post( validateRequest(PackageValidation.createPackageZodSchema), auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN), PackageController.createPackage)
-    .get(auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN, USER_ROLES.PROFESSIONAL), PackageController.getPackage)
+    .get(auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN, USER_ROLES.STUDENT), PackageController.getPackage)
 
 router
     .route("/:id")
     .patch(auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN), PackageController.updatePackage)
-    .get(auth(USER_ROLES.PROFESSIONAL), PackageController.packageDetails)
+    .get(auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.SUPER_ADMIN ), PackageController.packageDetails)
 
 export const PackageRoutes = router;

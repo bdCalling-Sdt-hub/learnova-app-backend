@@ -4,10 +4,6 @@ import { ISubscription, SubscriptionModel } from "./subscription.interface";
 
 const subscriptionSchema = new Schema<ISubscription, SubscriptionModel>(
     {
-        customerId: {
-            type: String,
-            required: true
-        },
         priceAmount: {
             type: Number,
             required: true

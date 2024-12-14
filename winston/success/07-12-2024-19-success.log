@@ -1,7 +1,0 @@
-Sat Dec 07 2024 19:0:2 [LEARNOVA] info: 192.168.10.102 - GET /api/v1/course/student 200 - 16.389 ms
-Sat Dec 07 2024 19:2:44 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
-Sat Dec 07 2024 19:2:44 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m
-Sat Dec 07 2024 19:2:46 [LEARNOVA] info: 192.168.10.102 - GET /api/v1/course/student 200 - 16.826 ms
-Sat Dec 07 2024 19:3:5 [LEARNOVA] info: 192.168.10.102 - GET /api/v1/course/student?subject=Englis 200 - 5.021 ms
-Sat Dec 07 2024 19:9:33 [LEARNOVA] info: [32m🚀 Database connected successfully[39m
-Sat Dec 07 2024 19:9:33 [LEARNOVA] info: [33m♻️  Application listening on port:6001[39m

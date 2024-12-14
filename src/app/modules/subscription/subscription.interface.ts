@@ -1,7 +1,6 @@
 import { Model, Types } from 'mongoose';
 
 export type ISubscription = {
-    customerId: string;
     priceAmount: number;
     user: Types.ObjectId;
     package: Types.ObjectId;

@@ -41,11 +41,11 @@ const teacherShortList = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
-const shortDetails = catchAsync(async(req: Request, res: Response)=>{
+const shortDetailsForTeacher = catchAsync(async(req: Request, res: Response)=>{
 
-    const result = await ShortService.shortDetailsFromDB(req.params.id, req.query);
+    const result = await ShortService.shortDetailsForTeacherFromDB(req.params.id, req.query);
     sendResponse(res, {
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Short Details Retrieved Successfully",
         data: result
@@ -77,7 +77,7 @@ const getReels = catchAsync(async(req: Request, res: Response)=>{
 export const ShortController = {
     createShort,
     getShortList,
-    shortDetails,
+    shortDetailsForTeacher,
     teacherShortList,
     singleShortDetails,
     getReels    

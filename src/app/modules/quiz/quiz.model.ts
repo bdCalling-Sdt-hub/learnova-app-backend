@@ -28,9 +28,9 @@ const quizSchema = new Schema<IQuiz, QuizModel>(
             ref: "Short",
             required: false,
         },
-        course: {
+        topic: {
             type: Schema.Types.ObjectId,
-            ref: "Course",
+            ref: "Topic",
             required: false,
         },
         teacher: {

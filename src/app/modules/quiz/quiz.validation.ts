@@ -13,7 +13,7 @@ const quizCreateZodSchema = z.object({
         answer: z.string({required_error: "Answer is required"}),
         explanation: z.string({required_error: "Explanation is required"}),
         short: objectIdZodSchema("Short ID").optional(),
-        course: objectIdZodSchema("Course ID").optional(),
+        topic: objectIdZodSchema("Topic ID").optional(),
     })
 });
 

@@ -7,7 +7,7 @@ export type IQuiz = {
     answer: string;
     explanation: string;
     short?: Types.ObjectId;
-    course?: Types.ObjectId;
+    topic?: Types.ObjectId;
     teacher: Types.ObjectId;
 };
 

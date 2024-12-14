@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import { Bio } from "../bio/bio.model";
 import { User } from "../user/user.model";
 import { Short } from "../short/short.model";
+import { Lesson } from "../lesson/lesson.model";
 
 const createCourseToDB = async (payload: ICourse): Promise<ICourse | null> => {
     const result: ICourse = await Course.create(payload);
@@ -93,14 +94,15 @@ const getCourseForStudentFromDB = async (user: JwtPayload, query: Record<string,
     return { personalizedCourse, trendingCourse };
 }
 
-const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): Promise<ICourse | {}> => {
+const courseOverviewFromDB = async (id: string, query: Record<string, unknown>): Promise<ICourse | {}> => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
     }
 
     const result = await Course.findById(id)
-        .select("video title createdAt subject level description suitable");
+        .select("video title createdAt subject level description suitable")
+        .lean();
 
     if (!result) return {};
 
@@ -113,6 +115,8 @@ const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): 
         startDate.setDate(startDate.getDate() - 7);
     } else if (duration === "monthly") {
         startDate.setDate(startDate.getDate() - 30);
+    } else {
+        startDate.setTime(0);
     }
 
     const endDate = new Date();
@@ -153,10 +157,12 @@ const courseDetailsFromDB = async (id: string, query: Record<string, unknown>): 
     ]);
 
     const data = {
-        ...result.toObject(),
-        totalView: totalView || 0,
-        totalLike: totalLike || 0,
-        totalWatchTime: totalWatchTime || 0
+        ...result,
+        analytics: {
+            totalView: totalView,
+            totalLike: totalLike,
+            totalWatchTime: totalWatchTime[0]?.totalWatchTime || 0
+        }
     };
 
     return data;
@@ -279,9 +285,35 @@ const courseDetailsForStudentFromDB = async (id: string): Promise<ICourse | {}> 
     return data;
 };
 
+const courseDetailsFromDB = async (id: string): Promise<ICourse | {}> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const [course, lessons] = await Promise.all([
+        Course.findById(id)
+            .select("cover teacher subject title level suitable description aboutTeacher")
+            .populate({
+                path: "teacher",
+                select: "name"
+            })
+            .lean(),
+        Lesson.find({ course: id })
+    ])
+    if (!course) throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");;
+
+
+    return {
+        ...course,
+        lessons
+    }
+};
+
 export const CourseService = {
     createCourseToDB,
     getCourseFromDB,
+    courseOverviewFromDB,
     courseDetailsFromDB,
     courseDetailsStatisticFromDB,
     getCourseForStudentFromDB,

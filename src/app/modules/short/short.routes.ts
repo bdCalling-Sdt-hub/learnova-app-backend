@@ -38,18 +38,23 @@ router.route("/")
         ShortController.createShort
     )
     .get(
-        auth(USER_ROLES.TEACHER, USER_ROLES.STUDENT),
+        auth(USER_ROLES.STUDENT),
         ShortController.getShortList
     );
 
+router.get("/teacher-shorts",
+        auth(USER_ROLES.TEACHER),
+        ShortController.teacherShortList
+    );
+
 router.get("/:id",
-        auth(USER_ROLES.STUDENT),
-        ShortController.singleShortDetails
-    )
+        auth(USER_ROLES.TEACHER),
+        ShortController.shortDetailsForTeacher
+    );
 
 router.get("/:id",
     auth(USER_ROLES.STUDENT),
     ShortController.singleShortDetails
-)
+);
 
 export const ShortRoutes = router;

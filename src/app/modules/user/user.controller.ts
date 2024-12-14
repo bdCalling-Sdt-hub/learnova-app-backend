@@ -54,8 +54,7 @@ const updateProfile = catchAsync( async (req: Request, res: Response, next: Next
 
 //update profile
 const teacherProfile = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user;
-    const result = await UserService.teacherProfileFromDB(user);
+    const result = await UserService.teacherProfileFromDB(req.user);
 
     sendResponse(res, {
         success: true,

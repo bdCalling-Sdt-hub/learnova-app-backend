@@ -4,6 +4,7 @@ import { Lesson } from "./lesson.model";
 import ApiError from "../../../errors/ApiErrors";
 import { StatusCodes } from "http-status-codes";
 import { Course } from "../course/course.model";
+import { Topic } from "../topic/topic.model";
 
 const createLessonToDB = async (payload: ILesson): Promise<ILesson | null> => {
     const course = await Course.findById(payload.course)
@@ -17,26 +18,60 @@ const createLessonToDB = async (payload: ILesson): Promise<ILesson | null> => {
     return result;
 };
 
-const getLessonByCourseFromDB = async (id: string): Promise<ILesson[]> => {
+const updateLessonToDB = async (id: string, payload: ILesson): Promise<{}> => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID")
     }
-    const result = await Lesson.find({ course: id });
-    return result;
+    const updatedLesson = await Lesson.findByIdAndUpdate(
+        { _id: id },
+        payload,
+        {new: true}
+    );
+
+    if(!updatedLesson){
+        throw new ApiError(StatusCodes.CONFLICT, "Failed to Updated Lesson");
+    }
+    return updatedLesson;
 };
 
-const lessonDetailsFromDB = async (id: string): Promise<ILesson | null> => {
+const lessonDetailsFromDB = async (id: string): Promise<ILesson | {}> => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID")
     }
-    const result = await Lesson.findById(id);
+
+    const [lesson, topics] = await Promise.all([
+        Lesson.findById(id).select("title createdAt").lean(),
+        Topic.find({lesson: id}).select("title topic createdAt")
+    ]);
+
+    if(!lesson){
+        return {};
+    }
+
+    return {
+        ...lesson,
+        topics
+    };
+};
+
+const deleteLessonToDB = async (id: string): Promise<ILesson | null> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID")
+    }
+    
+    const result = await Lesson.findByIdAndDelete(id);
+    if(!result){
+        throw new ApiError(StatusCodes.CONFLICT, "Failed to Deleted Lesson");
+    }
     return result;
 };
 
 export const LessonService = {
     createLessonToDB,
-    getLessonByCourseFromDB,
+    updateLessonToDB,
+    deleteLessonToDB,
     lessonDetailsFromDB
 };

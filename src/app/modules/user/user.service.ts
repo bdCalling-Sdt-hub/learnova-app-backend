@@ -12,10 +12,10 @@ import { Following } from "../following/following.model";
 import { View } from "../view/view.mode";
 import { Course } from "../course/course.model";
 import { Enroll } from "../enroll/enroll.model";
-import { ICourse } from "../course/course.interface";
 import { Lesson } from "../lesson/lesson.model";
 import { Topic } from "../topic/topic.model";
 import { Progress } from "../progress/progress.model";
+import { Like } from "../like/like.model";
 
 const createUserToDB = async (payload: Partial<IUser>): Promise<IUser> => {
 
@@ -102,14 +102,32 @@ const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {
 
     if (!teacher) return {};
 
-    const data = {
+
+    const courses = await Course.find({ teacher: user.id }).select("create title cover subject").lean();
+    if(!courses){
+        return [];
+    }
+
+    const result = await Promise.all(courses?.map(async (course:any) => {
+
+        const totalLike = await Like.countDocuments({ course: course._id });
+        const totalView = await View.countDocuments({ course: course._id });
+
+        return {
+            ...course,
+            totalLike,
+            totalView
+        }
+    }));
+
+    return {
         ...teacher,
         totalFollower,
         totalView,
-        totalWatchTime: totalWatchTime
-    }
+        totalWatchTime: totalWatchTime[0]?.totalWatchTime || 0,
+        courses: result
 
-    return data;
+    };
 };
 
 const studentProfileFromDB = async (user: JwtPayload): Promise<{}> => {
