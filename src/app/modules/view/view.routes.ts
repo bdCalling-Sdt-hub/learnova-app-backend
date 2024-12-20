@@ -22,4 +22,4 @@ router.get("/watchTime-statistic",
     ViewController.viewStatistic
 );
 
-export  const ShortRoutes = router;
+export  const ViewRoutes = router;

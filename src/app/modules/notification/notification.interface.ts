@@ -1,11 +1,11 @@
 import { Model, Types } from 'mongoose';
 
 export type INotification = {
-  text: string;
-  receiver?: Types.ObjectId;
-  title?: string;
+  title: string;
+  message: string;
+  user: Types.ObjectId;
   read: boolean;
-  type?: string;
+  direction: "Student" | "Teacher" | "Subscription";
 };
 
 export type NotificationModel = Model<INotification>;

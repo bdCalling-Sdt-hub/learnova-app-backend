@@ -12,6 +12,11 @@ router.post("/",
     FollowingController.toggleFollowing
 );
 
+router.get("/follower-statistic", 
+    auth(USER_ROLES.TEACHER), 
+    FollowingController.followerStatistic
+);
+
 router.post("/:id", auth(USER_ROLES.TEACHER), FollowingController.followingCount);
 
 export const FollowingRoutes = router;

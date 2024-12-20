@@ -9,3 +9,5 @@ router
     .route('/terms-and-conditions')
     .post(auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN), RuleController.createTermsAndCondition)
     .get(RuleController.getTermsAndCondition);
+
+export const  RuleRoutes = router;

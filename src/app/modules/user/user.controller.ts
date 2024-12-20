@@ -9,13 +9,12 @@ import { FileWithMedia } from '../../../types/imagePath';
 // register user
 const createUser = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
     const { ...userData } = req.body;
-    const result = await UserService.createUserToDB(userData);
+    await UserService.createUserToDB(userData);
 
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'User created successfully',
-        data: result
+        message: 'Please check your email to verify your account. We have sent you an OTP to complete the registration process.',
     })
 });
 
@@ -52,7 +51,17 @@ const updateProfile = catchAsync( async (req: Request, res: Response, next: Next
     });
 });
 
-//update profile
+const teacherHomeProfile = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
+    const result = await UserService.teacherHomeProfileFromDB(req.user);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Teacher Profile Retrieved successfully',
+        data: result
+    });
+});
+
 const teacherProfile = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
     const result = await UserService.teacherProfileFromDB(req.user);
 
@@ -80,6 +89,7 @@ export const UserController = {
     createUser,
     getUserProfile, 
     updateProfile,
+    teacherHomeProfile,
     teacherProfile,
     studentProfile
 };

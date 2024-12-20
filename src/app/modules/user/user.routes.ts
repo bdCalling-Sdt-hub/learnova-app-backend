@@ -32,6 +32,11 @@ router
         UserController.updateProfile
     );
 
+router.get("/teacher-home-profile", 
+    auth(USER_ROLES.TEACHER),
+    UserController.teacherHomeProfile
+)
+
 router.get("/teacher-profile", 
     auth(USER_ROLES.TEACHER),
     UserController.teacherProfile

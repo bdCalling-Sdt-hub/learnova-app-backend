@@ -39,12 +39,12 @@ const viewStatisticFromDB = async (user: JwtPayload, query: string): Promise<{ d
     let daysArray: { day: string; totalView: number }[] = [];
 
     // Initialize daysArray based on the query parameter
-    if (query === "weekly") {
-        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
-    } else if (query === "monthly") {
-        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
+    if (query === "monthly") {
+        daysArray = Array.from(
+            { length: new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() }
+            , (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
     } else {
-        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
+        daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalView: 0 }));
     }
 
     // Calculate view statistics based on query
@@ -84,12 +84,12 @@ const watchTimeStatisticFromDB = async (user: JwtPayload, query: string): Promis
     let daysArray: { day: string; totalHour: number }[] = [];
 
     // Initialize daysArray based on the query parameter
-    if (query === "weekly") {
+    if (query === "monthly") {
+        daysArray = Array.from(
+            { length: new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() }
+            , (_, i) => ({ day: (i + 1).toString(), totalHour: 0 }));
+    } else{
         daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalHour: 0 }));
-    } else if (query === "monthly") {
-        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalHour: 0 }));
-    } else {
-        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
     }
 
     // Calculate view statistics based on query

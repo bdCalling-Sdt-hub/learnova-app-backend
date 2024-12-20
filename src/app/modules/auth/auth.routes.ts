@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { USER_ROLES } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
@@ -27,6 +27,19 @@ router.post(
 
 router.post(
     '/verify-email',
+    async (req: Request, res: Response, next: NextFunction) => {
+
+        try {
+            
+            const { email, oneTimeCode } = req.body;
+
+            req.body = { email, oneTimeCode: Number(oneTimeCode) };
+            next();
+
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to convert string to number" });
+        }
+    },
     validateRequest(AuthValidation.createVerifyEmailZodSchema),
     AuthController.verifyEmail
 );

@@ -47,12 +47,12 @@ const followerStatisticFromDB = async (user: JwtPayload , query: string): Promis
     let daysArray: { day: string; totalFollower: number }[] = [];
 
     // Initialize daysArray based on the query parameter
-    if (query === "weekly") {
+    if (query === "monthly") {
+        daysArray = Array.from(
+            { length: new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() }, 
+            (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
+    } else{
         daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
-    } else if (query === "monthly") {
-        daysArray = Array.from({ length: 30 }, (_, i) => ({ day: (i + 1).toString(), totalFollower: 0 }));
-    } else {
-        throw new Error("Invalid query parameter. It should be either 'weekly' or 'monthly'.");
     }
 
     // Calculate view statistics based on query

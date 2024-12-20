@@ -16,8 +16,9 @@ import { Lesson } from "../lesson/lesson.model";
 import { Topic } from "../topic/topic.model";
 import { Progress } from "../progress/progress.model";
 import { Like } from "../like/like.model";
+import { Short } from "../short/short.model";
 
-const createUserToDB = async (payload: Partial<IUser>): Promise<IUser> => {
+const createUserToDB = async (payload: Partial<IUser>) => {
 
     const createUser = await User.create(payload);
     if (!createUser) {
@@ -46,7 +47,7 @@ const createUserToDB = async (payload: Partial<IUser>): Promise<IUser> => {
         { $set: { authentication } }
     );
 
-    return createUser;
+    return;
 };
 
 const getUserProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser>> => {
@@ -78,7 +79,7 @@ const updateProfileToDB = async (user: JwtPayload, payload: Partial<IUser>): Pro
     return updateDoc;
 };
 
-const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {}>> => {
+const teacherHomeProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {}>> => {
 
     const [teacher, totalFollower, totalView, totalWatchTime] = await Promise.all([
         User.findById(user.id).select("name profile").lean(),
@@ -127,6 +128,23 @@ const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {
         totalWatchTime: totalWatchTime[0]?.totalWatchTime || 0,
         courses: result
 
+    };
+};
+
+const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {}>> => {
+
+    const [teacher, totalCourses, totalShorts] = await Promise.all([
+        User.findById(user.id).select("name profile createdAt").lean(),
+        Course.countDocuments({ teacher: user.id }),
+        Short.countDocuments({ teacher: user.id })
+    ]);
+
+    if (!teacher) return {};
+
+    return {
+        ...teacher,
+        totalCourses,
+        totalShorts
     };
 };
 
@@ -193,6 +211,7 @@ export const UserService = {
     createUserToDB,
     getUserProfileFromDB,
     updateProfileToDB,
+    teacherHomeProfileFromDB,
     teacherProfileFromDB,
     studentProfileFromDB
 };
