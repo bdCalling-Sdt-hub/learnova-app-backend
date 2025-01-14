@@ -12,5 +12,5 @@ export const createMediaPath = async (file: FileWithMedia) =>{
         return `/videos/${file.video?.filename}`;
     }
 
-    return null
+    return undefined;
 }

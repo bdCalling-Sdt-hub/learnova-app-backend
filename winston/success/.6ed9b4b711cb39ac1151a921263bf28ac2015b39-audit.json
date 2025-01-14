@@ -6,34 +6,54 @@
     "auditLog": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\.6ed9b4b711cb39ac1151a921263bf28ac2015b39-audit.json",
     "files": [
         {
-            "date": 1734602633719,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\19-12-2024-16-success.log",
-            "hash": "2ef239e7d7a341bdce17ecc5144e46546cfaf89aab3803483176fa5c767e98d2"
+            "date": 1736762916448,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\13-01-2025-16-success.log",
+            "hash": "092b3f1b4f69adcae21a65fa53de55bf22aaa14ef07198288c8ef4c7706a0a41"
         },
         {
-            "date": 1734606374985,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\19-12-2024-17-success.log",
-            "hash": "72832d88561b64587d037bbba7c57129ef249aeb21cd67cbcea071af40aefec7"
+            "date": 1736766061757,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\13-01-2025-17-success.log",
+            "hash": "a269f0417e03e291f81f0466f27d5aceca9f355fba9d878bc5039c8728223540"
         },
         {
-            "date": 1734609650359,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\19-12-2024-18-success.log",
-            "hash": "b8247d3a9476ff75831a13c587efc7ed0c639061ec665c776dfde8a8a523c24a"
+            "date": 1736770710635,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\13-01-2025-18-success.log",
+            "hash": "2fc7317d2e9916fde22c8eefe8a19184dccdb8539aaf069f3af7135011334aeb"
         },
         {
-            "date": 1734685191632,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\20-12-2024-14-success.log",
-            "hash": "235e01ae822879e441f4718fd3df1bb4533eaeb7b04dcdd326eed6ac3931fb7c"
+            "date": 1736825119832,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-09-success.log",
+            "hash": "3d6ae58bd4899e4a4f00f8a666dc097d7ae0ab74893b7791f7e9ed99684517a9"
         },
         {
-            "date": 1734685525542,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\20-12-2024-15-success.log",
-            "hash": "ee30d7c504e23afe95980f99dea14aef9e80b0835c73872b196908cf331a13bd"
+            "date": 1736828324499,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-10-success.log",
+            "hash": "cbf637e48d894fd50d797a1a48172c8cda89b475aba3805762a68ef838341c16"
         },
         {
-            "date": 1734688960117,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\20-12-2024-16-success.log",
-            "hash": "9dec8029c2e808775e925f5eb725ff1946da3146cf82d097adfb8980923b2a18"
+            "date": 1736830990833,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-11-success.log",
+            "hash": "2a9d08bc51105a3e5cfec7ba661443f3569b864e5851d006ddee2c979bd5e86b"
+        },
+        {
+            "date": 1736835116832,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-12-success.log",
+            "hash": "1bf2f615f1ebe0b99590e6e5b044f49ee231e86b1db4cb8ddeb893860e1f12a2"
+        },
+        {
+            "date": 1736843730074,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-14-success.log",
+            "hash": "1f1e7b01ca32c62ff024e681842f7342c99c226015836e3d373f640ebf9106ca"
+        },
+        {
+            "date": 1736845414215,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-15-success.log",
+            "hash": "90299fefc80d10481fc3e6e1e6e172916455415615e53842d1f2c911c8fcde3f"
+        },
+        {
+            "date": 1736848801036,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\14-01-2025-16-success.log",
+            "hash": "cbd3b38587e07225e6011c45b7ba8660911c03d8cc7ea21089e5d84f9d2a8380"
         }
     ],
     "hashType": "sha256"

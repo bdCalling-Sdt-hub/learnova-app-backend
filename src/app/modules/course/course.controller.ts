@@ -81,7 +81,7 @@ const teacherDetails = catchAsync(async(req: Request, res: Response)=>{
 
 const courseDetailsForStudent = catchAsync(async(req: Request, res: Response)=>{
     
-    const result = await CourseService.courseDetailsForStudentFromDB(req.params.id);
+    const result = await CourseService.courseDetailsForStudentFromDB(req.user, req.params.id);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

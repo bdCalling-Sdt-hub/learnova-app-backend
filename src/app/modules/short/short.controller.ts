@@ -74,11 +74,23 @@ const getReels = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+const shortPreview = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.shortPreviewFromDB(req.params.id);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Short Preview Retrieved Successfully",
+        data: result
+    })
+});
+
 export const ShortController = {
     createShort,
     getShortList,
     shortDetailsForTeacher,
     teacherShortList,
     singleShortDetails,
-    getReels    
+    getReels,
+    shortPreview
 }

@@ -67,7 +67,7 @@ router.route("/:id")
         TopicController.updateTopic
     )
     .delete(
-        auth(USER_ROLES.STUDENT),
+        auth(USER_ROLES.TEACHER),
         TopicController.deleteTopic
     )
 

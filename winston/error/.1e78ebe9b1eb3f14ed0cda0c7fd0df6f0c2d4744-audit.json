@@ -6,29 +6,34 @@
     "auditLog": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\.1e78ebe9b1eb3f14ed0cda0c7fd0df6f0c2d4744-audit.json",
     "files": [
         {
-            "date": 1734606193922,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\19-12-2024-17-error.log",
-            "hash": "fc9083e64c73774cd5c887ecafaf421521fb15062effd008aa8ab55ff302b603"
+            "date": 1736766431173,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\13-01-2025-17-error.log",
+            "hash": "39bb20ae1f97afa4090ff3c8a9e2d46cb96b78362fab978d2f7c097f807283f8"
         },
         {
-            "date": 1734610395507,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\19-12-2024-18-error.log",
-            "hash": "3e1c34bfa680f4e2fb210f2515aab185405556263310ae514ef694f5a03eadb5"
+            "date": 1736833110203,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\14-01-2025-11-error.log",
+            "hash": "3ed73ccfa1cdebd6eacd6cad7788c3b712e891c207bd500770b90ca67561b725"
         },
         {
-            "date": 1734685191637,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\20-12-2024-14-error.log",
-            "hash": "5db27ed6538f2559e16eef963e61bd806a97afd274e5d43be16dfd4e5ac78700"
+            "date": 1736836417624,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\14-01-2025-12-error.log",
+            "hash": "19aa713084a484e01bdd8354954e136907777d2328247d6a85f7f05235cb7c62"
         },
         {
-            "date": 1734685629035,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\20-12-2024-15-error.log",
-            "hash": "67de0b31f58d177535cd865f59e4b1c17ca0da33fc4bc7a383c3027bf4c77ac9"
+            "date": 1736843162569,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\14-01-2025-14-error.log",
+            "hash": "848145c3a678dd34ee0613db9fe47d70a577d4e8dca9a56cd7ffa95db451034f"
         },
         {
-            "date": 1734688960120,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\20-12-2024-16-error.log",
-            "hash": "cd83cbfcceac6f261e91c6570876f1cf937d4d12d4dd58ffbe74bba11cb4f2f4"
+            "date": 1736847625091,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\14-01-2025-15-error.log",
+            "hash": "938a7ad4ea46478a40f68a2eaa3cddabcf72a1ab69bec7a01d83b85ed8345341"
+        },
+        {
+            "date": 1736850122918,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\error\\14-01-2025-16-error.log",
+            "hash": "b7be3f5047c9b3c3a0c91ab3c67bd8e7caa30f826adf2966cbdcb0596eacd30a"
         }
     ],
     "hashType": "sha256"

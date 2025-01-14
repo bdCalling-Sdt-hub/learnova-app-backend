@@ -12,14 +12,14 @@ const createAccount = (values: ICreateAccount) => {
                     <img src="https://res.cloudinary.com/ddqovbzxy/image/upload/v1730978400/learnova_pewnlb.jpg" alt="Learnova Logo" style="display: block; margin: 0 auto 20px; width:150px" />
 
                     <!-- Greeting -->
-                    <h2 style="color: #1153A0; font-size: 24px; margin-bottom: 20px;">Hey, ${values.name}!</h2>
+                    <h2 style="color: #1153A0; font-size: 24px; margin-bottom: 20px;">Hi, ${values.name}!</h2>
 
                     <!-- Verification Instructions -->
-                    <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Thank you for signing up for Learnova. Please verify your email address to activate your account.</p>
+                    <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Thank you for signing up for Learnova! To complete your registration, please verify your email address by entering the one-time verification code below:</p>
 
                     <!-- OTP Section -->
                     <div style="text-align: center;">
-                        <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Your single use code is:</p>
+                        <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Your Verification Code:</p>
                         <div style="background-color: #1153A0; width: 120px; padding: 10px; text-align: center; border-radius: 8px; color: #fff; font-size: 25px; letter-spacing: 2px; margin: 20px auto;">${values.otp}</div>
                         <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">This code is valid for 3 minutes.</p>
                     </div>

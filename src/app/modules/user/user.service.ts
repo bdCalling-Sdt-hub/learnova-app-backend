@@ -61,15 +61,18 @@ const getUserProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser>> =
 
 const updateProfileToDB = async (user: JwtPayload, payload: Partial<IUser>): Promise<Partial<IUser | null>> => {
     const { id } = user;
+
     const isExistUser = await User.isExistUserById(id);
     if (!isExistUser) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
     }
 
     //unlink file here
-    if (payload.profile) {
+    if (payload.profile && isExistUser.profile?.startsWith("/") ) {
         unlinkFile(isExistUser.profile);
     }
+
+    console.log(payload)
 
     const updateDoc = await User.findOneAndUpdate(
         { _id: id },
@@ -104,7 +107,7 @@ const teacherHomeProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser
     if (!teacher) return {};
 
 
-    const courses = await Course.find({ teacher: user.id }).select("create title cover subject").lean();
+    const courses = await Course.find({ teacher: user.id }).select("create title cover createdAt subject").lean();
     if(!courses){
         return [];
     }
@@ -144,7 +147,8 @@ const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {
     return {
         ...teacher,
         totalCourses,
-        totalShorts
+        totalShorts,
+        revenue: 0
     };
 };
 
@@ -158,14 +162,14 @@ const studentProfileFromDB = async (user: JwtPayload): Promise<{}> => {
             .populate([
                 {
                     path: "course",
-                    select: "title subject level"
+                    select: "title subject level createdAt"
                 },
                 {
                     path: "teacher",
-                    select: "profile name"
+                    select: "profile name createdAt"
                 },
             ])
-            .select("course teacher created")
+            .select("course teacher createdAt")
     ]);
 
     if (!student) {
@@ -195,12 +199,14 @@ const studentProfileFromDB = async (user: JwtPayload): Promise<{}> => {
     const completedCourses = courseStatuses.filter(status => status).length;
     const progressCourses = courseStatuses.filter(status => !status).length;
 
+    const totalFollowing = await Following.countDocuments({ student: user.id });
 
     const data = {
         ...student,
         courses,
         progressCourses,
-        completedCourses
+        completedCourses,
+        totalFollowing
     }
 
     return data;

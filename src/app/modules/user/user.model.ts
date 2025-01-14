@@ -39,7 +39,7 @@ const userSchema = new Schema<IUser, UserModal>(
         },
         profile: {
             type: String,
-            default: 'https://i.ibb.co/z5YHLV9/profile.png',
+            default: 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
         },
         verified: {
             type: Boolean,

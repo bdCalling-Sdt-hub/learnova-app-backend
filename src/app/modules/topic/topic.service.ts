@@ -42,8 +42,23 @@ const updateTopicToDB = async (id: string, payload: ITopic): Promise<ITopic | nu
     return result;
 }; 
 
+
+const getTopicDetailsFromDB = async (id: string): Promise<ITopic | null> => {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID")
+    }
+    
+    const topic = await Topic.findById(id).lean();
+    if(!topic){
+        throw new ApiError(StatusCodes.BAD_REQUEST, "No found Topic Data");
+    }
+    return topic;
+};
+
 export const TopicService = {
     createTopicToDB,
     updateTopicToDB,
-    deleteTopicToDB
+    deleteTopicToDB,
+    getTopicDetailsFromDB
 }

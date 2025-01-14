@@ -35,7 +35,7 @@ const getUserProfile = catchAsync(async (req: Request, res: Response) => {
 const updateProfile = catchAsync( async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     
-    const profile = createMediaPath(req.files as FileWithMedia);
+    const profile = await createMediaPath(req.files as FileWithMedia);
 
     const data = {
         profile,

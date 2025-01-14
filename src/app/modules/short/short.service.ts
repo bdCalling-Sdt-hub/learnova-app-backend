@@ -7,6 +7,7 @@ import { View } from "../view/view.mode";
 import { Like } from "../like/like.model";
 import mongoose from "mongoose";
 import { Following } from "../following/following.model";
+import { Quiz } from "../quiz/quiz.model";
 
 const createShortToDB = async (payload: IShort): Promise<IShort> => {
     const result = await Short.create(payload);
@@ -159,7 +160,13 @@ const teacherShortFromDB = async (user: JwtPayload, query: Record<string, unknow
 
     const whereConditions = anyConditions.length > 0 ? { $and: anyConditions } : {};
 
-    const result: IShort[] = await Short.find(whereConditions).select("title cover teacher createdAt ").lean();
+    const result: IShort[] = await Short.find(whereConditions)
+        .populate({
+            path: "teacher",
+            select: "name"
+        })
+        .select("title cover teacher createdAt ")
+        .lean();
 
     // if (!result) return [];
 
@@ -245,11 +252,30 @@ const shortDetailsForTeacherFromDB = async (id: string, query: Record<string, un
     return data;
 };
 
+const shortPreviewFromDB = async (id: string): Promise<IShort | {}> => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const [short, quizzes] = await Promise.all([
+        Short.findById(id).lean().populate({ path: "teacher", select: "name" }),
+        Quiz.find({ short: id }).select("question")
+    ]);
+
+    if (!short) throw new ApiError(StatusCodes.NOT_FOUND, "Short not found");
+
+    return {
+        ...short,
+        quizzes
+    };
+};
+
 export const ShortService = {
     createShortToDB,
     getShortFromDB,
     shortDetailsForTeacherFromDB,
     teacherShortFromDB,
     singleShortFromDB,
-    getReelsFromDB
+    getReelsFromDB,
+    shortPreviewFromDB
 }

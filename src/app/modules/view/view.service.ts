@@ -78,7 +78,7 @@ const viewStatisticFromDB = async (user: JwtPayload, query: string): Promise<{ d
 
 const watchTimeStatisticFromDB = async (user: JwtPayload, query: string): Promise<{ day: string; totalHour: number }[]> => {
     const now = new Date();
-    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
     const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of the next month
 
     let daysArray: { day: string; totalHour: number }[] = [];

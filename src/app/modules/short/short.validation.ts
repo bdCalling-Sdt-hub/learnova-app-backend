@@ -10,7 +10,7 @@ const shortCreatedZodSchema = z.object({
         title: z.string({ message: "Title is required" }),
         subject: z.string({ message: "Subject is required" }),
         description: z.string({ message: "Description is required" }),
-        level: z.enum([Level.Beginner, Level.Intermediate, Level.Advance], {
+        level: z.enum([Level.Beginner, Level.Intermediate, Level.Advanced], {
             required_error: "Level is required",
         }),
         suitable: z.string({ message: "Suitable field is required" })

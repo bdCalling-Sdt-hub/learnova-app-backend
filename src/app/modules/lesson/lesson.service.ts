@@ -5,6 +5,7 @@ import ApiError from "../../../errors/ApiErrors";
 import { StatusCodes } from "http-status-codes";
 import { Course } from "../course/course.model";
 import { Topic } from "../topic/topic.model";
+import { Quiz } from "../quiz/quiz.model";
 
 const createLessonToDB = async (payload: ILesson): Promise<ILesson | null> => {
     const course = await Course.findById(payload.course)
@@ -43,16 +44,21 @@ const lessonDetailsFromDB = async (id: string): Promise<ILesson | {}> => {
 
     const [lesson, topics] = await Promise.all([
         Lesson.findById(id).select("title createdAt").lean(),
-        Topic.find({lesson: id}).select("title topic createdAt")
+        Topic.find({lesson: id}).select("title topic createdAt").lean()
     ]);
 
     if(!lesson){
-        return {};
+        throw new ApiError(StatusCodes.NOT_FOUND, "Lesson not found");
     }
+
+    const topicWithQuiz = await Promise.all(topics?.map(async (topic: any) => {
+        const quiz = await Quiz.findOne({topic: topic._id}).select("question").lean();
+        return {...topic, quiz};
+    }));
 
     return {
         ...lesson,
-        topics
+        topics: topicWithQuiz
     };
 };
 

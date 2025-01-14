@@ -37,9 +37,21 @@ const deleteTopic = catchAsync(async (req: Request, res: Response)=>{
     })
 });
 
+const getTopicDetails = catchAsync(async (req: Request, res: Response)=>{
+    const result = await TopicService.getTopicDetailsFromDB(req.params.id);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Topic Details Retrieved Successfully",
+        data: result
+    })
+});
+
 
 export const TopicController = {
     createTopic,
     updateTopic,
-    deleteTopic
+    deleteTopic,
+    getTopicDetails
 }

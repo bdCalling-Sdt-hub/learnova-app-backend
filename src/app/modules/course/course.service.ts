@@ -39,7 +39,13 @@ const getCourseFromDB = async (user: JwtPayload, search: String): Promise<ICours
 
     const whereConditions = anyConditions.length > 0 ? { $and: anyConditions } : {};
 
-    const result: ICourse[] = await Course.find(whereConditions).select("title cover createdAt").lean();
+    const result: ICourse[] = await Course.find(whereConditions)
+        .populate({
+            path: "teacher",
+            select: "name"
+        })
+        .select("title cover createdAt")
+        .lean();
 
     if (!result) return [];
 
@@ -101,7 +107,7 @@ const courseOverviewFromDB = async (id: string, query: Record<string, unknown>):
     }
 
     const result = await Course.findById(id)
-        .select("video title createdAt subject level description suitable")
+        .select("video title createdAt subject cover level description suitable")
         .lean();
 
     if (!result) return {};
@@ -229,7 +235,7 @@ const teacherDetailsFromDB = async (id: string): Promise<{}> => {
         .select("profile name createdAt")
         .lean();
 
-    if (!teacher){
+    if (!teacher) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Teacher not found");
     }
 
@@ -237,20 +243,27 @@ const teacherDetailsFromDB = async (id: string): Promise<{}> => {
         Short.countDocuments({ teacher: id }),
         Course.countDocuments({ teacher: id }),
         Course.find({ teacher: id })
-            .select("teacher level cover")
+            .select("teacher level cover title")
             .populate({ path: "teacher", select: "name" })
             .lean(),
         Short.find({ teacher: id })
-            .select("teacher cover")
+            .select("teacher cover title")
             .populate({ path: "teacher", select: "name" })
             .lean()
     ])
+
+    const courses = await Promise.all(course?.map(async (course: any) => {
+        return {
+            ...course,
+            likes: await Like.countDocuments({ course: course._id }) || 0,
+        }
+    }));
 
     const data = {
         ...teacher,
         shortsCount,
         courseCount,
-        course,
+        course: courses,
         short
     }
 
@@ -258,28 +271,30 @@ const teacherDetailsFromDB = async (id: string): Promise<{}> => {
     return data;
 };
 
-const courseDetailsForStudentFromDB = async (id: string): Promise<ICourse | {}> => {
+const courseDetailsForStudentFromDB = async (user: JwtPayload ,id: string): Promise<ICourse | {}> => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
     }
 
-    const [course, likeCount] = await Promise.all([
+    const [course, likeCount, isLiked] = await Promise.all([
         Course.findById(id)
-            .select("video title level description")
+            .select("video title level description cover")
             .populate({
                 path: "teacher",
                 select: "name"
             })
             .lean(),
-        Like.countDocuments({ course: id })
+        Like.countDocuments({ course: id }),
+        Like.findOne({ course: id, student: user.id }),
     ])
 
     if (!course) throw new ApiError(StatusCodes.NOT_FOUND, "Teacher not found");;
 
     const data = {
         ...course,
-        likeCount
+        likeCount,
+        isLiked: !!isLiked
     }
 
     return data;
