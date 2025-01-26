@@ -2,6 +2,9 @@ import { JwtPayload } from 'jsonwebtoken';
 import { INotification } from './notification.interface';
 import { Notification } from './notification.model';
 import QueryBuilder from '../../../helpers/apiFeature';
+import mongoose from 'mongoose';
+import ApiError from '../../../errors/ApiErrors';
+import { StatusCodes } from 'http-status-codes';
 
 // get notifications
 const getNotificationFromDB = async (
@@ -55,9 +58,25 @@ const adminReadNotificationToDB = async (): Promise<INotification | null> => {
   return result;
 };
 
+// read notifications only for admin
+const adminReadSingleNotificationToDB = async (id: string): Promise<INotification | null> => {
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Notification ID")
+  }
+
+  const result: any = await Notification.findByIdAndUpdate(
+    {_id: id},
+    { $set: { read: true } },
+    { new: true }
+  );
+  return result;
+};
+
 export const NotificationService = {
   adminNotificationFromDB,
   getNotificationFromDB,
   readNotificationToDB,
   adminReadNotificationToDB,
+  adminReadSingleNotificationToDB
 };

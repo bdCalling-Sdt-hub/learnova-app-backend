@@ -56,9 +56,24 @@ const adminReadNotification = catchAsync(
   }
 );
 
+
+const adminReadSingleNotification = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await NotificationService.adminReadSingleNotificationToDB(req.params.id);
+
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Notification Read Successfully',
+      data: result,
+    });
+  }
+);
+
 export const NotificationController = {
   adminNotificationFromDB,
   getNotificationFromDB,
   readNotification,
   adminReadNotification,
+  adminReadSingleNotification
 };
