@@ -20,7 +20,7 @@ router.patch('/',
 
 router.patch(
   '/admin',
-  auth(USER_ROLES.TEACHER),
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
   NotificationController.adminReadNotification
 );
 
