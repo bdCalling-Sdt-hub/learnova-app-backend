@@ -7,8 +7,8 @@ export type IPackage = {
     price: Number;
     duration: 'month' | 'year';
     feature: [String];
-    priceId: String;
     productId: String;
+    paymentLink?: string;
 }
 
 export type PackageModel = Model<IPackage, Record<string, unknown>>;

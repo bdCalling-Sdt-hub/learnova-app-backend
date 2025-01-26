@@ -5,7 +5,8 @@ export type ITopic = {
     topic: string;
     title: string;
     notes: string;
-    documents?: string;
+    duration?: string;
+    documents: string;
     lesson: Types.ObjectId; // Reference to the Lesson model
 };
 

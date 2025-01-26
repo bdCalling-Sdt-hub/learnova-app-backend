@@ -3,7 +3,6 @@ import { IEnroll } from "./enroll.interface";
 import ApiError from "../../../errors/ApiErrors";
 import { StatusCodes } from "http-status-codes";
 import { Enroll } from "./enroll.model";
-import { JwtPayload } from "jsonwebtoken";
 import { Lesson } from "../lesson/lesson.model";
 import { Course } from "../course/course.model";
 import { Topic } from "../topic/topic.model";
@@ -54,6 +53,26 @@ const enrollCourseDetailsFromDB = async (id: string): Promise<{}> => {
 
     const lessons = await Lesson.find({ course: id }).lean();
 
+    let completedLessonCount = 0;
+
+    await Promise.all(
+        lessons.map(async (lesson: any) => {
+            const topics = await Topic.find({ lesson: lesson._id }).lean();
+
+            const allTopicsCompleted = await Promise.all(
+                topics.map(async (topic: any) => {
+                    const progress = await Progress.findOne({ topic: topic._id, lesson: lesson._id }).lean();
+                    return !!progress;
+                })
+            );
+
+            // Increment count if all topics in the lesson are completed
+            if (allTopicsCompleted.every((isCompleted) => isCompleted)) {
+                completedLessonCount++;
+            }
+        })
+    );
+
     // Fetch all topics for the lessons in bulk
     const lessonIds = lessons.map(lesson => lesson._id);
     const topics = await Topic.find({ lesson: { $in: lessonIds } }).lean();
@@ -67,7 +86,7 @@ const enrollCourseDetailsFromDB = async (id: string): Promise<{}> => {
     const completedTopicIds = new Set(progressEntries.map(entry => entry.topic.toString()));
 
     // Map lessons to include their topics with completion status
-    const progressLesson = lessons.map(lesson => {
+    const progressLesson =  lessons.map(lesson => {
         const lessonTopics = topics.filter(topic => topic.lesson.toString() === lesson._id.toString());
         const progressTopic = lessonTopics.map(topic => ({
             ...topic,
@@ -83,6 +102,7 @@ const enrollCourseDetailsFromDB = async (id: string): Promise<{}> => {
 
     const data = {
         ...courses,
+        completedLessonCount,
         progressLesson
     }
     return data;

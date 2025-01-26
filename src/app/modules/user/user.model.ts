@@ -25,6 +25,10 @@ const userSchema = new Schema<IUser, UserModal>(
             type: String,
             required: false,
         },
+        designation: {
+            type: String,
+            required: false,
+        },
         contact: {
             type: String,
             required: false,
@@ -44,6 +48,11 @@ const userSchema = new Schema<IUser, UserModal>(
         verified: {
             type: Boolean,
             default: false,
+        },
+        status: {
+            type: String,
+            enum: ["Pending", "Approved", "Restricted", "Blocked"],
+            required: false
         },
         authentication: {
             type: {
@@ -124,6 +133,7 @@ userSchema.pre('save', async function (next) {
 
     // If the role is TEACHER, set accountInformation to default values if not already set
     if (user.role === USER_ROLES.TEACHER) {
+        user.status = "Pending";
         user.accountInformation = {
             status: false
         };

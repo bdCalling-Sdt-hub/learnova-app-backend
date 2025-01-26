@@ -4,34 +4,27 @@ import { SubscriptionService } from "./subscription.service";
 import sendResponse from "../../../shared/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
-const createPaymentIntent = catchAsync(async (req: Request, res: Response)=>{
-    const result = await SubscriptionService.createPaymentIntentToStripe(req.user, req.body.priceId);
+const subscriptionDetails = catchAsync(async (req: Request, res: Response)=>{
+    const result = await SubscriptionService.subscriptionDetailsFromDB(req.user);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: "Create payment Intent Successfully",
+        message: "Subscription data retrieved Successfully",
         data: result
     })
 });
 
-const createSubscription = catchAsync(async (req: Request, res: Response)=>{
 
-    const payload = {
-        user: req.user.id,
-        ...req.body
-    }
-    const result = await SubscriptionService.createSubscriptionToDB(payload);
+const subscriptionsList = catchAsync(async (req: Request, res: Response)=>{
+    const result = await SubscriptionService.getSubscriptionFromDB(req.query);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: "Create Subscription Successfully",
+        message: "Subscription data retrieved Successfully",
         data: result
     })
 });
 
-export const SubscriptionController = {
-    createPaymentIntent,
-    createSubscription
-}
+export const SubscriptionController = {subscriptionDetails, subscriptionsList}

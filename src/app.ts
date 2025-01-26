@@ -4,11 +4,19 @@ import { StatusCodes } from "http-status-codes";
 import { Morgan } from "./shared/morgan";
 import router from '../src/app/routes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import handleStripeWebhook from "./webhook/handleStripeWebhook";
 const app = express();
 
 // morgan
 app.use(Morgan.successHandler);
 app.use(Morgan.errorHandler);
+
+// Stripe webhook route
+app.use(
+    '/api/stripe/webhook',
+    express.raw({ type: 'application/json' }),
+    handleStripeWebhook
+);
 
 
 //body parser

@@ -27,6 +27,14 @@ const loginUserFromDB = async (payload: ILoginData) => {
         throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
     }
 
+    if(isExistUser.status === "Restricted"){
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'Your account is Restricted, please contact support');
+    }
+
+    if(isExistUser.status === "Pending"){
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'Your account is Pending, please wait until admin approve your account');
+    }
+
     //check verified and status
     if (!isExistUser.verified) {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Please verify your account, then try to login again');
@@ -60,7 +68,7 @@ const socialLoginFromDB = async (payload: IUser) => {
 
     const { appId, role } = payload;
 
-    const isExistUser = await User.findOne({ appId });
+    const isExistUser = await User.findOne({ appId: appId, role });
 
     if (isExistUser) {
 
@@ -78,7 +86,7 @@ const socialLoginFromDB = async (payload: IUser) => {
             config.jwt.jwtRefreshExpiresIn as string
         );
 
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken, role, loginType: 'social' };
 
     } else {
 
@@ -101,7 +109,7 @@ const socialLoginFromDB = async (payload: IUser) => {
             config.jwt.jwtRefreshExpiresIn as string
         );
 
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken, role };
     }
 }
 

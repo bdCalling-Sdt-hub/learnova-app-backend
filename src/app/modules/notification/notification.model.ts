@@ -3,30 +3,35 @@ import { INotification, NotificationModel } from './notification.interface';
 
 const notificationSchema = new Schema<INotification, NotificationModel>(
   {
-    title: {
+    text: {
       type: String,
-      required: true,
+      required: true
     },
-    message: {
-      type: String,
-      required: true,
-    },
-    user: {
+    receiver: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: false
+    },
+    referenceId: {
+      type: String,
+      required: false
+    },
+    screen: {
+      type: String,
+      required: false
     },
     read: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    direction: {
+    type: {
       type: String,
+      enum: ['ADMIN'],
       required: false
     }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 

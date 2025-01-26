@@ -5,6 +5,7 @@ import { USER_ROLES } from "../../../enums/user";
 import validateRequest from "../../middlewares/validateRequest";
 import { TopicValidation } from "./topic.validation";
 import { TopicController } from "./topic.controller";
+import { getSingleFilePath } from "../../../shared/getFilePath";
 const router = express.Router();
 
 router.post("/",
@@ -20,13 +21,8 @@ router.post("/",
                 video = `/videos/${req.files.video[0].filename}`;
             }
 
-            // this is for image string;
-            let document: string | undefined = undefined;
-            if (req.files && "document" in req.files && req.files.document[0]) {
-                document = `/documents/${req.files.document[0].filename}`;
-            }
-
-            req.body = { document, video, ...payload };
+            let documents = getSingleFilePath(req.files, "document");
+            req.body = { documents, video, ...payload };
             next();
 
         } catch (error) {
@@ -69,6 +65,10 @@ router.route("/:id")
     .delete(
         auth(USER_ROLES.TEACHER),
         TopicController.deleteTopic
+    )
+    .get(
+        auth(USER_ROLES.STUDENT),
+        TopicController.getTopicDetails
     )
 
 export const TopicRoutes = router;

@@ -17,6 +17,8 @@ import { FaqRoutes } from '../modules/faq/faq.route';
 import { RuleRoutes } from '../modules/rule/rule.route';
 import { ViewRoutes } from '../modules/view/view.routes';
 import { StudentRoutes } from '../modules/student/student.routes';
+import { AdminRoutes } from '../modules/admin/admin.routes';
+import { NotificationRoutes } from '../modules/notification/notification.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -38,6 +40,8 @@ const apiRoutes = [
     { path: "/rule", route: RuleRoutes  },
     { path: "/view", route: ViewRoutes  },
     { path: "/student", route: StudentRoutes  },
+    { path: "/admin", route: AdminRoutes  },
+    { path: "/notification", route: NotificationRoutes  },
 ]
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

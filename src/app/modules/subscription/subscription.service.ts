@@ -1,117 +1,90 @@
 import { JwtPayload } from "jsonwebtoken";
-import Stripe from "stripe";
-import stripe from "../../../config/stripe";
 import ApiError from "../../../errors/ApiErrors";
 import { StatusCodes } from "http-status-codes";
 import { ISubscription } from "./subscription.interface";
 import { Subscription } from "./subscription.model";
+import { Package } from "../package/package.model";
+import QueryBuilder from "../../../helpers/apiFeature";
 
-// create payment intent
-const createPaymentIntentToStripe = async(
-    user: JwtPayload, priceId:string ): Promise<{client_secret: string, txid: string}> =>{
-
-    // Create customer
-    const customer = await stripe.customers.create({email : user.email});
-    if (!customer) throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to created customer");
-
-    // Create subscription
-    const subscription: Stripe.Subscription = await stripe.subscriptions.create({
-        customer: customer.id,
-        items: [{ price: priceId }],
-        payment_behavior: 'default_incomplete',
-        expand: ['latest_invoice.payment_intent']
-    });
-    if (!subscription) throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to created customer");
-
-    // Check if latest_invoice exists and is of type Invoice
-    const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
-
-    return {
-        client_secret: (latestInvoice.payment_intent as Stripe.PaymentIntent).client_secret as string,
-        txid : (latestInvoice.payment_intent as Stripe.PaymentIntent).id
-    };
-}
-
-// create subscription
-const createSubscriptionToDB = async(payload: Partial<ISubscription>): Promise<ISubscription>=>{
-    const subscription = await Subscription.create(payload);
-    if(!subscription) throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to created subscription");
+const subscriptionDetailsFromDB = async (user: JwtPayload): Promise<ISubscription> => {
+    const subscription = await Subscription.findOne({ user: user.id });
+    if (!subscription) throw new ApiError(StatusCodes.BAD_REQUEST, "No subscription found");
     return subscription;
 }
 
-// create subscription update intent
-const updatePaymentIntentToStripe = async (payload: Partial<ISubscription>): Promise<{ paymentIntent: Stripe.PaymentIntent }>=>{
+const getSubscriptionFromDB = async (query: Record<string, any>) => {
 
-    const { subscribeId, priceId  } = payload;
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
-    // Retrieve the existing subscription from Stripe
-    const subscription = await stripe.subscriptions.retrieve(payload.subscribeId as string);
-    if (!subscription) throw new ApiError( StatusCodes.NOT_FOUND, 'Invalid Subscription ID');
+    const subscriptionsArray = Array.from(
+        { length: 12 },
+        (_, i) => (
+            {
+                month: monthNames[i],
+                monthly: 0,
+                yearly: 0,
+            }
+        )
+    );
 
-    // Update the subscription in Stripe with the new priceId
-    const updatedSubscription: Stripe.Subscription = await stripe.subscriptions.update(
-        subscribeId as string,
+
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+
+    const subscriptionStatistics = await Subscription.aggregate([
         {
-            items: [
-                {
-                    id: subscription.items.data[0].id,
-                    price: priceId,
-                }
-            ],
-            expand: ['latest_invoice.payment_intent'],
-        }
-    );
-    if (!subscription) throw new ApiError( StatusCodes.NOT_FOUND, 'Failed to Update Subscription.Please try again');
-
-    // Check if latest_invoice exists and is of type Invoice
-    const latestInvoice = updatedSubscription.latest_invoice as Stripe.Invoice;
-
-    return { paymentIntent: latestInvoice.payment_intent as Stripe.PaymentIntent };
-}
-
-// update subscription
-const updateSubscriptionToDB = async( id:string, payload: ISubscription ): Promise<ISubscription> =>{
-
-    const updatedSubscription = await Subscription.findByIdAndUpdate(
-        {_id: id},
-        payload,
-        {new : true}
-    )
-
-    if(!updatedSubscription) throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to updated Subscription")
-    return updatedSubscription;
-}
-
-// cancel subscription from the stripe and update status on the subscription database.
-const cancelSubscriptionToDBAndStripe = async (subscribeId: Partial<ISubscription> ): Promise<ISubscription | null> => {
-
-    // Check if the subscription exists in the database
-    const subscription = await Subscription.findOne({ subscribeId });
-    if (!subscription) throw new ApiError(StatusCodes.NOT_FOUND, 'Invalid Subscription ID');
-
-    const updatedSubscription = await stripe.subscriptions.update(
-        subscribeId as string,
+            $match: {
+                createdAt: { $gte: startDate, $lt: endDate }
+            }
+        },
         {
-            cancel_at_period_end: true
+            $group: {
+                _id: {
+                    month: { $month: "$createdAt" },
+                    duration: "$package.duration"
+                },
+                monthly: { $sum: 1 },
+                yearly: { $sum: { $cond: [{ $eq: [{ $year: "$createdAt" }, now.getFullYear()] }, 1, 0] } }
+            }
         }
-    );
-    if (!updatedSubscription) throw new ApiError(StatusCodes.NOT_FOUND, 'Failed To canceled subscription on the stripe');
+    ]);
 
-    // Update the subscription details in the database
-    const updatedSub = await Subscription.findOneAndUpdate(
-        { subscribeId : subscribeId },
-        {status: "Cancel" },
-        { new: true }
-    );
-    if (!updatedSub) throw new ApiError(StatusCodes.NOT_FOUND, 'Failed update subscription');
+    // Update subscriptionsArray with the calculated statistics
+    subscriptionStatistics.forEach((stat) => {
+        const monthIndex = stat._id.month - 1; // Month is 1-indexed
+        if (monthIndex < subscriptionsArray.length) {
+            if (stat._id.duration === 'month') {
+                subscriptionsArray[monthIndex].monthly += stat.monthly;
+            } else if (stat._id.duration === 'year') {
+                subscriptionsArray[monthIndex].yearly += stat.yearly;
+            }
+        }
+    });
 
-    return updatedSub;
+    const packages = await Package.find();
+
+    const apiFeatures = new QueryBuilder(Subscription.find(), query).paginate();
+    const subscriptions = await apiFeatures.queryModel;
+    const pagination = await apiFeatures.getPaginationInfo();
+
+
+
+    return {
+        subscriptionsArray,
+        packages,
+        subscriptions,
+        pagination
+    };
 }
+
+
 
 export const SubscriptionService = {
-    createPaymentIntentToStripe,
-    createSubscriptionToDB,
-    updatePaymentIntentToStripe,
-    updateSubscriptionToDB,
-    cancelSubscriptionToDBAndStripe
-}
+    subscriptionDetailsFromDB,
+    getSubscriptionFromDB
+} 

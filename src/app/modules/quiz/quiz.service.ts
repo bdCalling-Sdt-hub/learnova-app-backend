@@ -16,12 +16,21 @@ const quizDetailsFromDB = async (id: string): Promise<IQuiz | {}> => {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid Quiz ID");
     }
 
-    const quiz:any = await Quiz.findById(id)
-        .populate({ 
-            path: "short", 
-            select : "subject"
-        });
+    const quiz: any = await Quiz.findOne({
+        $or: [{ short: id }, { topic: id }]
+    })
+        .populate([
+            {
+                path: "short",
+                select: "subject"
+            },
+            {
+                path: "topic",
+                select: "subject"
+            },
+        ]);
 
+    // console.log(first)
     return quiz;
 }
 

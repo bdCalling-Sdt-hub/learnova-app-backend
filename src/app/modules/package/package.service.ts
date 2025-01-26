@@ -5,8 +5,6 @@ import { Package } from "./package.model";
 import mongoose from "mongoose";
 import { createSubscriptionProduct } from "../../../helpers/createSubscriptionProductHelper";
 import stripe from "../../../config/stripe";
-import { updateSubscriptionProduct } from "../../../helpers/updateSubscriptionProductHelper";
-import Stripe from "stripe";
 
 const createPackageToDB = async(payload: IPackage): Promise<IPackage | null>=>{
 
@@ -14,7 +12,7 @@ const createPackageToDB = async(payload: IPackage): Promise<IPackage | null>=>{
         title: payload.title,
         description: payload.description,
         duration: payload.duration,
-        price: payload.price,
+        price: Number(payload.price),
     }
 
     const product = await createSubscriptionProduct(productPayload)
@@ -24,8 +22,8 @@ const createPackageToDB = async(payload: IPackage): Promise<IPackage | null>=>{
     }
 
     if(product){
-        payload.priceId = product.priceId
         payload.productId = product.productId
+        payload.paymentLink = product.paymentLink
     }
 
     const result = await Package.create(payload);
@@ -43,14 +41,6 @@ const updatePackageToDB = async(id: string, payload: IPackage): Promise<IPackage
         throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID")
     }
 
-    const product:any = await Package.findById(id).select("productId");
-
-    if(payload?.price || payload?.duration || payload.title){
-        const {productId, priceId}:any =  await updateSubscriptionProduct(product?.productId, payload);
-        payload.priceId = priceId;
-        payload.productId = productId;
-    }
-
     const result = await Package.findByIdAndUpdate(
         {_id: id},
         payload,
@@ -66,7 +56,7 @@ const updatePackageToDB = async(id: string, payload: IPackage): Promise<IPackage
 
 
 const getPackageFromDB = async(): Promise<IPackage[]>=>{
-    const result = await Package.find().select("title description price duration feature");
+    const result = await Package.find().select("title description price duration feature paymentLink");
     return result;
 }
 

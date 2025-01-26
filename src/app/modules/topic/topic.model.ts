@@ -20,9 +20,14 @@ const topicSchema = new Schema<ITopic, TopicModel>(
             type: String,
             required: true
         },
+        duration: {
+            type: String,
+            default: "",
+        },
         documents: {
             type: String,
-            required: false
+            required: false,
+            default: ""
         },
         lesson: {
             type: Schema.Types.ObjectId,

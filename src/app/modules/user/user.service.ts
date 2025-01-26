@@ -17,6 +17,7 @@ import { Topic } from "../topic/topic.model";
 import { Progress } from "../progress/progress.model";
 import { Like } from "../like/like.model";
 import { Short } from "../short/short.model";
+import { sendNotifications } from "../../../helpers/notificationsHelper";
 
 const createUserToDB = async (payload: Partial<IUser>) => {
 
@@ -42,10 +43,21 @@ const createUserToDB = async (payload: Partial<IUser>) => {
         expireAt: new Date(Date.now() + 3 * 60000),
     };
 
-    await User.findOneAndUpdate(
+    const user:any = await User.findOneAndUpdate(
         { _id: createUser._id },
         { $set: { authentication } }
     );
+
+    if (payload.role === "TEACHER") {
+        const data = {
+            text: "A Teacher has been registered. Check it and approve it!",
+            read: false,
+            referenceId: user._id,
+            screen: "REGISTER",
+            type: "ADMIN"
+        }
+        sendNotifications(data);
+    }
 
     return;
 };
@@ -68,11 +80,9 @@ const updateProfileToDB = async (user: JwtPayload, payload: Partial<IUser>): Pro
     }
 
     //unlink file here
-    if (payload.profile && isExistUser.profile?.startsWith("/") ) {
+    if (payload.profile && isExistUser.profile?.startsWith("/")) {
         unlinkFile(isExistUser.profile);
     }
-
-    console.log(payload)
 
     const updateDoc = await User.findOneAndUpdate(
         { _id: id },
@@ -108,11 +118,11 @@ const teacherHomeProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser
 
 
     const courses = await Course.find({ teacher: user.id }).select("create title cover createdAt subject").lean();
-    if(!courses){
+    if (!courses) {
         return [];
     }
 
-    const result = await Promise.all(courses?.map(async (course:any) => {
+    const result = await Promise.all(courses?.map(async (course: any) => {
 
         const totalLike = await Like.countDocuments({ course: course._id });
         const totalView = await View.countDocuments({ course: course._id });
@@ -136,11 +146,31 @@ const teacherHomeProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser
 
 const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {}>> => {
 
-    const [teacher, totalCourses, totalShorts] = await Promise.all([
+    const [teacher, totalCourses, totalShorts, courses] = await Promise.all([
         User.findById(user.id).select("name profile createdAt").lean(),
         Course.countDocuments({ teacher: user.id }),
-        Short.countDocuments({ teacher: user.id })
+        Short.countDocuments({ teacher: user.id }),
+        Course.find({ teacher: user.id })
+            .select("teacher level cover title")
+            .populate({ path: "teacher", select: "name" })
+            .lean(),
     ]);
+
+    const coursesWithViews = await Promise.all(
+        courses?.map(async (course: any) => {
+            const views = await View.find({ course: course._id });
+            return {
+                ...course,
+                viewCount: views.length,
+            };
+        })
+    );
+
+    const topViewingCourse = coursesWithViews.reduce((topCourse, currentCourse) => {
+        return (currentCourse.viewCount > (topCourse?.viewCount || 0))
+            ? currentCourse
+            : topCourse;
+    }, []);
 
     if (!teacher) return {};
 
@@ -148,7 +178,8 @@ const teacherProfileFromDB = async (user: JwtPayload): Promise<Partial<IUser | {
         ...teacher,
         totalCourses,
         totalShorts,
-        revenue: 0
+        revenue: 0,
+        topViewingCourse
     };
 };
 
@@ -156,7 +187,7 @@ const studentProfileFromDB = async (user: JwtPayload): Promise<{}> => {
 
     const [student, courses] = await Promise.all([
         User.findById(user.id)
-            .select("name profile createdAt")
+            .select("name profile createdAt isSubscribe")
             .lean(),
         Enroll.find({ student: user.id })
             .populate([

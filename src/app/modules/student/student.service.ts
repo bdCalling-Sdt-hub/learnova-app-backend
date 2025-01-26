@@ -8,11 +8,13 @@ const updateStudentToDB = async (user: JwtPayload,payload: Partial<IUser>): Prom
 
     const { profile, name, ...restPayload} = payload;
 
-    const isExistUser = await User.isExistUserById(user.id);
+    const isExistUser:any = await User.findById(user.id).lean();
 
     if(profile && isExistUser.profile?.startsWith("/")){
         unlinkFile(isExistUser.profile);
     }
+
+    console.log(payload)
 
     const updateBio = await Bio.findOneAndUpdate(
         { student: user.id },

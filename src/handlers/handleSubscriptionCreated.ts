@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import Stripe from 'stripe';
 import ApiError from '../errors/ApiErrors';
 import stripe from '../config/stripe';
+import { sendNotifications } from '../helpers/notificationsHelper';
 const User:any = "";
 const PricingPlan:any = "";
 const Subscription:any = "";
@@ -54,6 +55,18 @@ export const handleSubscriptionCreated = async (data: Stripe.Subscription) => {
                 });
     
                 await newSubscription.save();
+
+
+                if (newSubscription) {
+                    const data = {
+                        text: "You have a new subscription!",
+                        read: false,
+                        referenceId: newSubscription._id,
+                        screen: "SUBSCRIPTION",
+                        type: "ADMIN"
+                    }
+                    sendNotifications(data);
+                }
         
                 // Update the user to reflect the active subscription
                 await User.findByIdAndUpdate(

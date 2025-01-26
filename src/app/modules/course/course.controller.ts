@@ -91,6 +91,19 @@ const courseDetailsForStudent = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+
+const courseAnalytics = catchAsync(async(req: Request, res: Response)=>{
+    
+    const result = await CourseService.courseAnalyticsFromDB(req.params.id);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Course Details For Student Retrieved Successfully",
+        data: result
+    })
+});
+
 export const CourseController = {
     createCourse,
     courseOverview,
@@ -98,5 +111,6 @@ export const CourseController = {
     getCourse,
     getCourseForStudent,
     teacherDetails,
-    courseDetailsForStudent
+    courseDetailsForStudent,
+    courseAnalytics
 }

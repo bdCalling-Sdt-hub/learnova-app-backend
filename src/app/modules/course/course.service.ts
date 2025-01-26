@@ -325,6 +325,90 @@ const courseDetailsFromDB = async (id: string): Promise<ICourse | {}> => {
     }
 };
 
+
+const courseAnalyticsFromDB = async (id: string): Promise<ICourse | {}> => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const result = await Course.findById(id)
+        .select("title createdAt title cover")
+        .lean();
+
+    if (!result) return {};
+
+    const totalViewCount = await View.countDocuments({ course: id });
+
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1); // Start of next month
+
+    // Initialize arrays for views and watch time
+    const viewsArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), total: 0 }));
+    const watchTimeArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), total: 0 }));
+
+    const [views, watchTimes] = await Promise.all([
+        View.aggregate([
+            {
+                $match: {
+                    course: id,
+                    createdAt: { $gte: startDate, $lt: endDate }
+                }
+            },
+            {
+                $group: {
+                    _id: { day: { $dayOfMonth: "$createdAt" } },
+                    total: { $sum: 1 } // Count each view
+                }
+            }
+        ]),
+        View.aggregate([
+            {
+                $match: {
+                    course: id,
+                    createdAt: { $gte: startDate, $lt: endDate }
+                }
+            },
+            {
+                $group: {
+                    _id: { day: { $dayOfMonth: "$createdAt" } },
+                    totalWatchTime: { $sum: "$watchTime" }
+                }
+            },
+            {
+                $project: {
+                    day: { $toString: "$_id.day" },
+                    totalHours: { $divide: ["$totalWatchTime", 3600] } // Convert seconds to hours
+                }
+            }
+        ])
+    ]);
+
+    // Update days array with the calculated statistics
+    views.forEach((entry: any) => {
+        const dayIndex = entry._id.day - 1; // Adjust for 0-based indexing
+        if (dayIndex < viewsArray.length) {
+            viewsArray[dayIndex].total = entry.total;
+        }
+    });
+
+    watchTimes.forEach((entry: any) => {
+        const dayIndex = parseInt(entry.day) - 1; // Adjust for 0-based indexing
+        if (dayIndex < watchTimeArray.length) {
+            watchTimeArray[dayIndex].total = entry.totalHours;
+        }
+    });
+
+    const data = {
+        ...result,
+        totalViewCount,
+        views: viewsArray,
+        watchTimes: watchTimeArray
+    };
+
+    return data;
+};
+
 export const CourseService = {
     createCourseToDB,
     getCourseFromDB,
@@ -333,5 +417,6 @@ export const CourseService = {
     courseDetailsStatisticFromDB,
     getCourseForStudentFromDB,
     teacherDetailsFromDB,
-    courseDetailsForStudentFromDB
+    courseDetailsForStudentFromDB,
+    courseAnalyticsFromDB
 }

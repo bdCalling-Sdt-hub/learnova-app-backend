@@ -23,10 +23,12 @@ export type IUser = {
     email?: string;
     password?: string;
     profile: string;
+    designation?: string;
     verified: boolean;
     bio?: Types.ObjectId;
     authentication?: IAuthenticationProps;
     accountInformation?: IStripeAccountInfo;
+    status?: "Pending" | "Approved" | "Restricted" | "Blocked";
 }
 
 export type UserModal = {

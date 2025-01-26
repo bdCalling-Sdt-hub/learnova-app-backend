@@ -7,12 +7,10 @@ import { JwtPayload } from "jsonwebtoken";
 const createViewToDB = async (payload: IView): Promise<IView | null> => {
 
     const query = {
-        student: payload.student,
-        course: payload.course,
-        lesson: payload.lesson,
+        ...payload
     }
 
-    const isExistView = await View.findOne(query)
+    const isExistView = await View.findOne(query);
 
     if (isExistView && isExistView?.watchTime < payload.watchTime) {
         const result = await View.findByIdAndUpdate(

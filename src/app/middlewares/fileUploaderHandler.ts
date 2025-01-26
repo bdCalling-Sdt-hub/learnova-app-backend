@@ -26,15 +26,15 @@ const fileUploadHandler = () => {
         destination: (req, file, cb) => {
             let uploadDir;
             switch (file.fieldname) {
+                case 'document':
+                    uploadDir = path.join(baseUploadDir, 'documents');
+                    break;
                 case 'image':
                     uploadDir = path.join(baseUploadDir, 'images');
                     break;
                 case 'cover':
                     uploadDir = path.join(baseUploadDir, 'covers');
                     break;
-                case 'document':
-                        uploadDir = path.join(baseUploadDir, 'documents');
-                        break;
                 case 'video':
                     uploadDir = path.join(baseUploadDir, 'videos');
                     break;
@@ -86,7 +86,7 @@ const fileUploadHandler = () => {
             }
         }
         else if (file.fieldname === 'document') {
-            if (file.mimetype === 'document/pdf') {
+            if (file.mimetype === 'application/pdf') {
                 cb(null, true);
             } else {
                 cb(new ApiError(StatusCodes.BAD_REQUEST, 'Only .pdf file supported'))
@@ -107,7 +107,7 @@ const fileUploadHandler = () => {
     const upload = multer({ storage: storage, fileFilter: filterFilter })
         .fields([
             { name: 'image', maxCount: 3 },
-            { name: 'document', maxCount: 1 },
+            { name: 'document', maxCount: 3 },
             { name: 'cover', maxCount: 1 },
             { name: 'video', maxCount: 1 },
         ]);

@@ -21,10 +21,6 @@ const packageSchema = new Schema<IPackage, PackageModel>(
             enum: ["month", "year"],
             required: true
         },
-        priceId: {
-            type: String,
-            required: true
-        },
         productId: {
             type: String,
             required: true
@@ -34,8 +30,11 @@ const packageSchema = new Schema<IPackage, PackageModel>(
                 type: String,
                 required: true
             }
-        ]
-        
+        ],
+        paymentLink: {
+            type: String,
+            required: true
+        }
     },
     {
         timestamps: true

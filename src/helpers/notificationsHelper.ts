@@ -9,6 +9,10 @@ export const sendNotifications = async (data:any):Promise<INotification> =>{
     //@ts-ignore
     const socketIo = global.io;
 
+    if (socketIo && data?.type === 'ADMIN') {
+        socketIo.emit(`getNotification`, result);
+    }
+
     if (socketIo) {
         socketIo.emit(`get-notification::${data?.receiver}`, result);
     }

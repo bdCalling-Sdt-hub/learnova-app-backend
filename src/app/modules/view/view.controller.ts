@@ -5,12 +5,8 @@ import sendResponse from "../../../shared/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
 const createView = catchAsync(async (req: Request, res: Response) => {
-    const payload = {
-        student: req.user.id,
-        ...req.body
-    }
 
-    const result = await ViewService.createViewToDB(payload);
+    const result = await ViewService.createViewToDB(req.body);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
