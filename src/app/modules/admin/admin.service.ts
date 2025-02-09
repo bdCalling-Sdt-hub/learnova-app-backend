@@ -11,6 +11,7 @@ import { Course } from "../course/course.model";
 import { View } from "../view/view.mode";
 import { USER_ROLES } from "../../../enums/user";
 import { Short } from "../short/short.model";
+import { Quiz } from "../quiz/quiz.model";
 
 const getStudentsFromDB = async (query: Record<string, any>): Promise<{ students: IUser[], pagination: any }> => {
 
@@ -220,28 +221,268 @@ const topCoursesAndShortsFromDB = async () => {
 
 const approvedAndRejectedTeacherFromDB = async (id: string, status: string): Promise<IUser> => {
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid ID');
     }
 
 
-    if( status !== 'Restricted' && status !== 'Pending' && status !== 'Approved' ){
+    if (status !== 'Restricted' && status !== 'Pending' && status !== 'Approved') {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid status');
     }
 
     const teacher = await User.findByIdAndUpdate(
-        {_id: id},
-        {status: status },
-        {new: true}
+        { _id: id },
+        { status: status },
+        { new: true }
     );
 
 
-    if(!teacher){
+    if (!teacher) {
         throw new ApiError(StatusCodes.NOT_FOUND, 'Teacher not found');
     }
 
     return teacher;
 };
+
+
+const countSummaryFromDB = async () => {
+
+    const totalUsers = await User.countDocuments({
+        $and: [
+            { role: { $ne: "SUPER-ADMIN" } },
+            { role: { $ne: "ADMIN" } }
+        ]
+    });
+
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+    startOfWeek.setHours(0, 0, 0, 0);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    const newSignsUp = await User.aggregate([
+        {
+            $match: {
+                role: { $nin: ["SUPER-ADMIN", "ADMIN"] },
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const totalQuiz = await Quiz.countDocuments();
+    const totalShorts = await Short.countDocuments();
+    const totalCourses = await Course.countDocuments()
+
+
+    return { totalUsers, newSignsUp: newSignsUp[0]?.total, totalQuiz, totalShorts, totalCourses };
+
+}
+
+const salesRevenueFromDB = async () => {
+
+    const now = new Date();
+
+    // Get the start of the current week (Monday)
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    // Get the end of the current week (Next Monday at 00:00:00)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    // Initialize an array for 7 days with default count of 0
+    const daysArray = Array.from({ length: 7 }, (_, i) => ({ day: (i + 1).toString(), total: 0 }));
+
+    // Aggregate subscription statistics
+    const salesStatistics = await Subscription.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: { day: { $dayOfWeek: "$createdAt" } }, // Get day of the week (1 = Sunday, 2 = Monday, etc.)
+                total: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Update daysArray with the calculated statistics
+    salesStatistics.forEach((stat) => {
+        const dayIndex = stat._id.day - 1; // Convert MongoDB's 1-based day index to 0-based
+        if (dayIndex === 0) {
+            daysArray[6].total = stat.total; // Convert Sunday (1 in MongoDB) to the last index (6)
+        } else {
+            daysArray[dayIndex - 1].total = stat.total; // Shift other days by 1
+        }
+    });
+
+
+    return daysArray;
+}
+
+const percentageSubscriptionFromDB = async () => {
+    const result = await Subscription.aggregate([
+        {
+            $lookup: {
+                from: "packages",
+                localField: "package",
+                foreignField: "_id",
+                as: "packageInfo"
+            }
+        },
+        {
+            $unwind: "$packageInfo"
+        },
+        {
+            $group: {
+                _id: "$packageInfo.duration",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: "$count" },
+                durations: { $push: { duration: "$_id", count: "$count" } }
+            }
+        },
+        {
+            $unwind: "$durations"
+        },
+        {
+            $project: {
+                _id: 0,
+                duration: "$durations.duration",
+                count: "$durations.count",
+                percentage: { $multiply: [{ $divide: ["$durations.count", "$total"] }, 100] }
+            }
+        }
+    ]);
+
+    return result;
+}
+
+
+const metricsFromDB = async () => {
+
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    const totalShorts = await Short.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const totalCourses = await Course.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const metrics = Array.from(
+        { length: 7 }, 
+        (_, i) => (
+            { 
+                day: (i + 1).toString(), 
+                totalShort: 0, 
+                totalCourse: 0 
+            }
+        )
+    );
+
+
+    const weeklyShorts = await Short.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: { day: { $dayOfWeek: "$createdAt" } },
+                totalShort: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const weeklyCourses = await Course.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startOfWeek, $lt: endOfWeek }
+            }
+        },
+        {
+            $group: {
+                _id: { day: { $dayOfWeek: "$createdAt" } },
+                total: { $sum: 1 }
+            }
+        }
+    ]);
+
+
+
+    // Update daysArray with the calculated statistics
+    weeklyShorts.forEach((stat) => {
+        const dayIndex = stat._id.day - 1;
+        if (dayIndex === 0) {
+            metrics[6].totalShort = stat.totalShort;
+        } else {
+            metrics[dayIndex - 1].totalShort = stat.totalShort;
+        }
+    });
+
+    // Update daysArray with the calculated statistics
+    weeklyCourses.forEach((stat) => {
+        const dayIndex = stat._id.day - 1;
+        if (dayIndex === 0) {
+            metrics[6].totalCourse = stat.totalCourse;
+        } else {
+            metrics[dayIndex - 1].totalCourse = stat.totalCourse;
+        }
+    });
+
+    const data = {
+        totalShorts: totalShorts[0]?.total || 0,
+        weeklyShorts: weeklyShorts[0]?.totalShort || 0,
+        weeklyCourses: weeklyCourses[0]?.total || 0,
+        totalCourses: totalCourses[0]?.total || 0
+    }
+    return { ...data, metrics }
+
+}
+
 
 export const AdminService = {
     getStudentsFromDB,
@@ -250,5 +491,9 @@ export const AdminService = {
     teacherDetailsFromDB,
     chartAnalyticsFromDB,
     topCoursesAndShortsFromDB,
-    approvedAndRejectedTeacherFromDB
+    approvedAndRejectedTeacherFromDB,
+    countSummaryFromDB,
+    salesRevenueFromDB,
+    percentageSubscriptionFromDB,
+    metricsFromDB
 }

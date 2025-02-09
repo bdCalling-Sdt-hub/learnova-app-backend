@@ -84,6 +84,53 @@ const approvedAndRejectedTeacher = catchAsync(async (req: Request, res: Response
     });
 });
 
+
+const countSummary = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.countSummaryFromDB();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Count Summery Retrieved Successfully',
+        data: result
+    });
+});
+
+
+const salesRevenue = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.salesRevenueFromDB();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Sales and revenue Retrieved Successfully',
+        data: result
+    });
+});
+
+const percentageSubscription = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.percentageSubscriptionFromDB();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Subscription Percentage Retrieved Successfully',
+        data: result
+    });
+});
+
+
+const metrics = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.metricsFromDB();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Metrics data Retrieved Successfully',
+        data: result
+    });
+});
+
 export const AdminController = {
     studentsList,
     teachersList,
@@ -91,5 +138,9 @@ export const AdminController = {
     teachersDetails,
     analyticsChart,
     topCoursesAndShorts,
-    approvedAndRejectedTeacher
+    approvedAndRejectedTeacher,
+    countSummary,
+    salesRevenue,
+    percentageSubscription,
+    metrics
 }

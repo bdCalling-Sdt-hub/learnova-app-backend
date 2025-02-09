@@ -29,6 +29,27 @@ router.patch('/approved-and-rejected-teacher/:id',
     AdminController.approvedAndRejectedTeacher
 );
 
+
+router.get('/home-summary-count',
+    auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+    AdminController.countSummary
+);
+
+router.get('/home-sales',
+    auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+    AdminController.salesRevenue
+);
+
+router.get('/home-percentage',
+    auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+    AdminController.percentageSubscription
+);
+
+router.get('/home-metrics',
+    auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+    AdminController.metrics
+);
+
 router.get('/student/:id',
     auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
     AdminController.studentsDetails
