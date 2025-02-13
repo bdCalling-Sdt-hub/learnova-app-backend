@@ -6,14 +6,9 @@
     "auditLog": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\.6ed9b4b711cb39ac1151a921263bf28ac2015b39-audit.json",
     "files": [
         {
-            "date": 1739090953633,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\09-02-2025-14-success.log",
-            "hash": "067111c31a27b9a827898a724d1835bfd534e72ca0a49624cc90c72469e92244"
-        },
-        {
-            "date": 1739091704192,
-            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\09-02-2025-15-success.log",
-            "hash": "fa0ee66ed5a7861460511ab001e27a23f6f469fd0d3c51fab2bb5036542671d0"
+            "date": 1739444784663,
+            "name": "D:\\bdCalling\\Backend\\learnova-app-backend\\winston\\success\\13-02-2025-17-success.log",
+            "hash": "5c9b9d819d17160907993543a5c748f5d878881fed6184a5e77cc951d3e1da23"
         }
     ],
     "hashType": "sha256"
