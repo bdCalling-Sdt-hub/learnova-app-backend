@@ -270,6 +270,17 @@ const shortPreviewFromDB = async (id: string): Promise<IShort | {}> => {
     };
 };
 
+
+const deleteShortFromDB = async (id: string): Promise<IShort> => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID");
+    }
+
+    const result = await Short.findByIdAndDelete(id);
+    if(!result) throw new ApiError(StatusCodes.NOT_FOUND, "Short not found");
+    return result;
+};
+
 export const ShortService = {
     createShortToDB,
     getShortFromDB,
@@ -277,5 +288,6 @@ export const ShortService = {
     teacherShortFromDB,
     singleShortFromDB,
     getReelsFromDB,
-    shortPreviewFromDB
+    shortPreviewFromDB,
+    deleteShortFromDB
 }

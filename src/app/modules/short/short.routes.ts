@@ -67,6 +67,10 @@ router.get("/:id",
     ShortController.shortDetailsForTeacher
 );
 
+router.delete("/:id",
+    auth(USER_ROLES.TEACHER),
+    ShortController.deleteShort
+);
 
 
 export const ShortRoutes = router;
