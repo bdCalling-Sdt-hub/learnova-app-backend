@@ -146,6 +146,7 @@ const teacherShortFromDB = async (user: JwtPayload, query: Record<string, unknow
 
     const { search, ...others } = query;
     const anyConditions = [];
+    anyConditions.push({ teacher: user.id });
 
     if (search) {
         anyConditions.push({
