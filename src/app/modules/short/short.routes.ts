@@ -5,6 +5,7 @@ import auth from "../../middlewares/auth";
 import { ShortController } from "./short.controller";
 import { ShortValidation } from "./short.validation";
 import fileUploadHandler from "../../middlewares/fileUploaderHandler";
+import fs from 'fs';
 const router = express.Router();
 
 router.route("/")
@@ -15,6 +16,12 @@ router.route("/")
             try {
                 const payload = req.body;
 
+                //@ts-ignore
+                const readStream = fs.createReadStream(req.files.video[0].path);
+                readStream.on('data', (chunk) => {
+                    console.log(chunk.length);
+                })
+                
                 // extract video file path;
                 let video: string | undefined = undefined;
                 if (req.files && "video" in req.files && req.files.video[0]) {
