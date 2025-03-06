@@ -15,14 +15,8 @@ router.post("/",
         try {
             const payload = req.body;
 
-            // this is for video string;
-            let video: string | undefined = undefined;
-            if (req.files && "video" in req.files && req.files.video[0]) {
-                video = `/videos/${req.files.video[0].filename}`;
-            }
-
             let documents = getSingleFilePath(req.files, "document");
-            req.body = { documents, video, ...payload };
+            req.body = { documents, ...payload };
             next();
 
         } catch (error) {

@@ -16,25 +16,13 @@ router.route("/")
             try {
                 const payload = req.body;
 
-                //@ts-ignore
-                const readStream = fs.createReadStream(req.files.video[0].path);
-                readStream.on('data', (chunk) => {
-                    console.log(chunk.length);
-                })
-                
-                // extract video file path;
-                let video: string | undefined = undefined;
-                if (req.files && "video" in req.files && req.files.video[0]) {
-                    video = `/videos/${req.files.video[0].filename}`;
-                }
-
                 // extract image file path;
                 let image: string | undefined = undefined;
                 if (req.files && "image" in req.files && req.files.image[0]) {
                     image = `/images/${req.files.image[0].filename}`;
                 }
 
-                req.body = { cover: image, video, ...payload };
+                req.body = { cover: image, ...payload };
                 next();
 
             } catch (error) {

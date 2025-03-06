@@ -2,9 +2,12 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { StatusCodes } from "http-status-codes";
 import { Morgan } from "./shared/morgan";
+import multer from "multer";
 import router from '../src/app/routes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import handleStripeWebhook from "./webhook/handleStripeWebhook";
+import { handleChunkUpload } from "./helpers/handleChunkVideoUpload";
+const upload = multer({ dest: 'uploads/' });
 const app = express();
 
 // morgan
@@ -29,6 +32,7 @@ app.use(express.static('uploads'));
 
 //router
 app.use('/api/v1', router);
+app.post('/api/v1/upload', upload.single('chunk'), handleChunkUpload);
 
 app.get("/", (req: Request, res: Response)=>{
     res.send("Hey, How can I assist you");
