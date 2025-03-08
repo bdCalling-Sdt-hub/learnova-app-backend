@@ -8,6 +8,7 @@ import { Like } from "../like/like.model";
 import mongoose from "mongoose";
 import { Following } from "../following/following.model";
 import { Quiz } from "../quiz/quiz.model";
+import QueryBuilder from "../../../helpers/apiFeature";
 
 const createShortToDB = async (payload: IShort): Promise<IShort> => {
     const result = await Short.create(payload);
@@ -282,6 +283,14 @@ const deleteShortFromDB = async (id: string): Promise<IShort> => {
     return result;
 };
 
+const shortsFromDB = async (query: Record<string, any>): Promise<{shorts: IShort[], pagination:any }> => {
+    
+    const result = new QueryBuilder(Short.find(), query).paginate();
+    const shorts = await result.queryModel.lean();
+    const pagination = await result.getPaginationInfo();
+    return { shorts, pagination };
+};
+
 export const ShortService = {
     createShortToDB,
     getShortFromDB,
@@ -290,5 +299,6 @@ export const ShortService = {
     singleShortFromDB,
     getReelsFromDB,
     shortPreviewFromDB,
-    deleteShortFromDB
+    deleteShortFromDB,
+    shortsFromDB
 }

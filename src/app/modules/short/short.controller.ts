@@ -96,6 +96,18 @@ const deleteShort = catchAsync(async(req: Request, res: Response)=>{
     })
 });
 
+const shortsForAdmin = catchAsync(async(req: Request, res: Response)=>{
+
+    const result = await ShortService.shortsFromDB(req.query);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Short Deleted Successfully",
+        data: result.shorts,
+        pagination: result.pagination
+    })
+});
+
 export const ShortController = {
     createShort,
     getShortList,
@@ -104,5 +116,6 @@ export const ShortController = {
     singleShortDetails,
     getReels,
     shortPreview,
-    deleteShort
+    deleteShort,
+    shortsForAdmin
 }

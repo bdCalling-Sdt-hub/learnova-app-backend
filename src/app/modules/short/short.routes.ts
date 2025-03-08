@@ -47,6 +47,11 @@ router.get("/reels",
     ShortController.getReels
 );
 
+router.get("/admin-short",
+    auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+    ShortController.createShort
+);
+
 router.get("/student/:id",
     auth(USER_ROLES.STUDENT),
     ShortController.singleShortDetails
@@ -63,7 +68,7 @@ router.get("/:id",
 );
 
 router.delete("/:id",
-    auth(USER_ROLES.TEACHER),
+    auth(USER_ROLES.TEACHER, USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
     ShortController.deleteShort
 );
 

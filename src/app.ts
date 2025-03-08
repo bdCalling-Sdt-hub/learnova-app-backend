@@ -23,8 +23,13 @@ app.use(
 
 
 //body parser
-app.use(cors());
-app.use(express.json({limit: "1000mb"}));
+app.use(cors({
+    origin: ['https://api.learnova.info', "https://learnova.info"],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json({ limit: "1000mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1000mb" }));
 
 //file retrieve
@@ -34,7 +39,7 @@ app.use(express.static('uploads'));
 app.use('/api/v1', router);
 app.post('/api/v1/upload', upload.single('chunk'), handleChunkUpload);
 
-app.get("/", (req: Request, res: Response)=>{
+app.get("/", (req: Request, res: Response) => {
     res.send("Hey, How can I assist you");
 })
 
@@ -42,7 +47,7 @@ app.get("/", (req: Request, res: Response)=>{
 app.use(globalErrorHandler);
 
 // handle not found route
-app.use((req: Request, res: Response)=>{
+app.use((req: Request, res: Response) => {
     res.status(StatusCodes.NOT_FOUND).json({
         success: false,
         message: "Not Found",
