@@ -49,7 +49,7 @@ router.get("/reels",
 
 router.get("/admin-short",
     auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
-    ShortController.createShort
+    ShortController.shortsForAdmin
 );
 
 router.get("/student/:id",
