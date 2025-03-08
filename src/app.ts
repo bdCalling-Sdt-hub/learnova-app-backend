@@ -24,7 +24,7 @@ app.use(
 
 //body parser
 app.use(cors({
-    origin: ['https://api.learnova.info', "https://learnova.info"],
+    origin: ['https://api.learnova.info', "https://mahmud.binarybards.online" , "https://learnova.info"],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
