@@ -286,7 +286,7 @@ const deleteShortFromDB = async (id: string): Promise<IShort> => {
 const shortsFromDB = async (query: Record<string, any>): Promise<{shorts: IShort[], pagination:any }> => {
     
     const result = new QueryBuilder(Short.find(), query).paginate();
-    const shorts = await result.queryModel.lean();
+    const shorts = await result.queryModel.populate("teacher", "name email designation").lean();
     const pagination = await result.getPaginationInfo();
     return { shorts, pagination };
 };
